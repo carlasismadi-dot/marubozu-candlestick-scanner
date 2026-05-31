@@ -7,6 +7,7 @@ import React, { useState, useMemo } from 'react';
 import { Search, TrendingUp, TrendingDown, RefreshCw, Coins, ArrowUpDown } from 'lucide-react';
 import { CoinData, Candle, ScannerSettings } from '../types';
 import { detectMarubozu } from '../utils/scanner';
+import { trackCoinSelected } from '../utils/analytics';
 
 interface ScannerTableProps {
   coins: CoinData[];
@@ -220,6 +221,8 @@ export default function ScannerTable({
                   <th className="py-3 px-2 text-center text-xs font-semibold">
                     Pattern Status ({selectedTimeframe.toUpperCase()})
                   </th>
+                  <th className="py-3 px-2 text-center text-xs font-semibold hidden xl:table-cell">Vol Ratio</th>
+                  <th className="py-3 px-2 text-center text-xs font-semibold hidden xl:table-cell">Score</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#F1F5F9]">
@@ -233,7 +236,10 @@ export default function ScannerTable({
                     <tr
                       id={`coin-row-${coin.id}`}
                       key={coin.id}
-                      onClick={() => setSelectedCoinId(coin.id)}
+                      onClick={() => {
+                        setSelectedCoinId(coin.id);
+                        trackCoinSelected(coin.id, coin.symbol, selectedTimeframe);
+                      }}
                       className={`group cursor-pointer hover:bg-[#F8FAFC] transition-all duration-150 ${
                         isSelected ? 'bg-[#F1F5F9] border-l-4 border-[#1A1A1E]' : ''
                       }`}
@@ -299,6 +305,36 @@ export default function ScannerTable({
                           </div>
                         ) : (
                           <span className="text-[#94A3B8] font-mono text-xs font-light">Neutral</span>
+                        )}
+                      </td>
+
+                      {/* Volume ratio */}
+                      <td className="py-3.5 px-2 text-center text-xs hidden xl:table-cell">
+                        {pattern.type !== 'none' ? (
+                          <span className={`font-mono font-bold ${
+                            pattern.volumeRatio >= 2 ? 'text-amber-500' : 'text-slate-400'
+                          }`}>
+                            {pattern.volumeRatio.toFixed(1)}×{pattern.volumeRatio >= 2 ? ' ⚡' : ''}
+                          </span>
+                        ) : (
+                          <span className="text-slate-300 font-mono">—</span>
+                        )}
+                      </td>
+
+                      {/* Strength score */}
+                      <td className="py-3.5 px-2 text-center text-xs hidden xl:table-cell">
+                        {pattern.type !== 'none' ? (
+                          <span className={`font-mono font-black px-2 py-0.5 rounded border ${
+                            pattern.strengthScore >= 8
+                              ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                              : pattern.strengthScore >= 5
+                                ? 'text-amber-700 bg-amber-50 border-amber-200'
+                                : 'text-slate-500 bg-slate-50 border-slate-200'
+                          }`}>
+                            {pattern.strengthScore}/10
+                          </span>
+                        ) : (
+                          <span className="text-slate-300 font-mono">—</span>
                         )}
                       </td>
                     </tr>
