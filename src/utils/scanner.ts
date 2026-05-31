@@ -54,7 +54,7 @@ export function detectMarubozu(
     ? lookback.reduce((sum, c) => sum + (c[5] ?? 0), 0) / lookback.length
     : 0;
   const candleVol = vol ?? 0;
-  const volumeRatio = avgVol > 0 ? candleVol / avgVol : 1;
+  const volumeRatio = avgVol > 0 ? candleVol / avgVol : 0;
 
   // ── Strength score 1–10 ────────────────────────────────────────────────────
   // Components:
@@ -65,7 +65,8 @@ export function detectMarubozu(
   const wickScore   = settings.wickTolerance > 0
     ? Math.max(0, 3 * (1 - wickRatio / settings.wickTolerance))
     : wickRatio === 0 ? 3 : 0;
-  const volScore    = Math.min(3, Math.max(0, (volumeRatio - 1) / 2) * 3);
+  const effectiveVolRatio = volumeRatio > 0 ? volumeRatio : 1;
+  const volScore    = Math.min(3, Math.max(0, (effectiveVolRatio - 1) / 2) * 3);
   const rawScore    = bodyScore + wickScore + volScore;
   const strengthScore = Math.max(1, Math.min(10, Math.round(rawScore)));
 
