@@ -221,8 +221,8 @@ export default function ScannerTable({
                   <th className="py-3 px-2 text-center text-xs font-semibold">
                     Pattern Status ({selectedTimeframe.toUpperCase()})
                   </th>
-                  <th className="py-3 px-2 text-center text-xs font-semibold hidden xl:table-cell">Vol Ratio</th>
-                  <th className="py-3 px-2 text-center text-xs font-semibold hidden xl:table-cell">Score</th>
+                  <th className="py-3 px-2 text-center text-xs font-semibold">Vol Ratio</th>
+                  <th className="py-3 px-2 text-center text-xs font-semibold">Score</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#F1F5F9]">
@@ -309,7 +309,7 @@ export default function ScannerTable({
                       </td>
 
                       {/* Volume ratio */}
-                      <td className="py-3.5 px-2 text-center text-xs hidden xl:table-cell">
+                      <td className="py-3.5 px-2 text-center text-xs">
                         {pattern.type !== 'none' ? (
                           <span className={`font-mono font-bold ${
                             pattern.volumeRatio >= 2 ? 'text-amber-500' : 'text-slate-400'
@@ -322,7 +322,7 @@ export default function ScannerTable({
                       </td>
 
                       {/* Strength score */}
-                      <td className="py-3.5 px-2 text-center text-xs hidden xl:table-cell">
+                      <td className="py-3.5 px-2 text-center text-xs">
                         {pattern.type !== 'none' ? (
                           <span className={`font-mono font-black px-2 py-0.5 rounded border ${
                             pattern.strengthScore >= 8
