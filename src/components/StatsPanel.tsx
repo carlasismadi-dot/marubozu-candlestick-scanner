@@ -21,30 +21,23 @@ export default function StatsPanel({
   settings,
   selectedTimeframe
 }: StatsPanelProps) {
-  
-  const daysMap = {
-    '30m': '1',
-    '4h': '7',
-    '1d': '30'
-  };
 
   const analytics = useMemo(() => {
     let totalScanned = 0;
     let bullishCount = 0;
     let bearishCount = 0;
-    let totalWithCandles = 0;
 
-    let strongestBull: { symbol: string, bodySize: number } | null = null;
-    let strongestBear: { symbol: string, bodySize: number } | null = null;
+    let strongestBull: { symbol: string; bodySize: number } | null = null;
+    let strongestBear: { symbol: string; bodySize: number } | null = null;
 
     coins.forEach(coin => {
-      const cacheKey = `${coin.id}_${daysMap[selectedTimeframe]}`;
-      const candles = ohlcRecords[cacheKey] || [];
+      // Keys are now interval strings: 30m / 4h / 1d
+      const cacheKey = `${coin.id}_${selectedTimeframe}`;
+      const candles  = ohlcRecords[cacheKey] || [];
 
       if (candles.length > 0) {
-        totalWithCandles++;
         const status = detectMarubozu(candles, settings, true);
-        
+
         if (status.type === 'bullish') {
           bullishCount++;
           if (!strongestBull || status.bodyPercent > strongestBull.bodySize) {
@@ -60,27 +53,26 @@ export default function StatsPanel({
       totalScanned++;
     });
 
-    const netRatio = bullishCount + bearishCount > 0 
-      ? (bullishCount / (bullishCount + bearishCount)) * 100 
+    const netRatio = bullishCount + bearishCount > 0
+      ? (bullishCount / (bullishCount + bearishCount)) * 100
       : 50;
 
-    let sentiment = 'NEUTRAL / CAUTIOUS';
+    let sentiment      = 'NEUTRAL / CAUTIOUS';
     let sentimentColor = 'text-[#64748B]';
-    let sentimentBg = 'bg-[#F1F5F9] border-[#E2E8F0]';
+    let sentimentBg    = 'bg-[#F1F5F9] border-[#E2E8F0]';
 
     if (bullishCount > bearishCount && bullishCount > 0) {
-      sentiment = bullishCount > bearishCount * 2 ? 'EXPLOSIVE BUY PRESSURE' : 'BULLISH CONTINUATION';
+      sentiment      = bullishCount > bearishCount * 2 ? 'EXPLOSIVE BUY PRESSURE' : 'BULLISH CONTINUATION';
       sentimentColor = 'text-[#166534]';
-      sentimentBg = 'bg-[#F0FDF4] border-[#DCFCE7]';
+      sentimentBg    = 'bg-[#F0FDF4] border-[#DCFCE7]';
     } else if (bearishCount > bullishCount && bearishCount > 0) {
-      sentiment = bearishCount > bullishCount * 2 ? 'PANIC SELL-OFFS' : 'BEARISH ACCELERATION';
+      sentiment      = bearishCount > bullishCount * 2 ? 'PANIC SELL-OFFS' : 'BEARISH ACCELERATION';
       sentimentColor = 'text-[#991B1B]';
-      sentimentBg = 'bg-[#FEF2F2] border-[#FEE2E2]';
+      sentimentBg    = 'bg-[#FEF2F2] border-[#FEE2E2]';
     }
 
     return {
       totalScanned,
-      totalWithCandles,
       bullishCount,
       bearishCount,
       netRatio,
@@ -88,14 +80,14 @@ export default function StatsPanel({
       sentimentColor,
       sentimentBg,
       strongestBull,
-      strongestBear
+      strongestBear,
     };
   }, [coins, ohlcRecords, settings, selectedTimeframe]);
 
   return (
     <div id="stats-panel-section" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      
-      {/* 1. Market Sentiment Card */}
+
+      {/* 1. Market Sentiment */}
       <div className={`border p-4 rounded-xl flex flex-col justify-between transition-all duration-300 shadow-sm ${analytics.sentimentBg}`}>
         <div className="flex items-center justify-between">
           <span className="text-[10px] uppercase font-bold tracking-wider text-[#94A3B8] font-mono">Market Momentum</span>
@@ -106,12 +98,12 @@ export default function StatsPanel({
             {analytics.sentiment}
           </div>
           <p className="text-[10px] text-[#64748B] mt-0.5 leading-tight font-sans">
-            Compiled from overall Marubozu ratios on {selectedTimeframe.toUpperCase()} charts.
+            Compiled from Marubozu ratios on {selectedTimeframe.toUpperCase()} charts.
           </p>
         </div>
       </div>
 
-      {/* 2. Ratio Progress Bar Card */}
+      {/* 2. Signal Proportions */}
       <div className="bg-white border border-[#E2E2E9] p-4 rounded-xl flex flex-col justify-between shadow-sm">
         <div className="flex items-center justify-between">
           <span className="text-[10px] uppercase font-bold tracking-wider text-[#94A3B8] font-mono">Signal Proportions</span>
@@ -122,20 +114,13 @@ export default function StatsPanel({
             <span className="text-[#166534]">🟢 {analytics.bullishCount} Bull</span>
             <span className="text-[#991B1B]">{analytics.bearishCount} Bear 🔴</span>
           </div>
-          {/* Progress bar */}
           <div className="w-full bg-[#F1F5F9] h-2 rounded-full overflow-hidden flex border border-[#E2E8F0]">
             {analytics.bullishCount + analytics.bearishCount === 0 ? (
               <div className="w-full bg-[#E2E8F0] h-full"></div>
             ) : (
               <>
-                <div 
-                  className="bg-[#22C55E] h-full" 
-                  style={{ width: `${analytics.netRatio}%` }}
-                ></div>
-                <div 
-                  className="bg-[#EF4444] h-full" 
-                  style={{ width: `${100 - analytics.netRatio}%` }}
-                ></div>
+                <div className="bg-[#22C55E] h-full" style={{ width: `${analytics.netRatio}%` }} />
+                <div className="bg-[#EF4444] h-full" style={{ width: `${100 - analytics.netRatio}%` }} />
               </>
             )}
           </div>
@@ -146,7 +131,7 @@ export default function StatsPanel({
         </div>
       </div>
 
-      {/* 3. Strongest Momentum Bull */}
+      {/* 3. Strongest Bullish */}
       <div className="bg-white border border-[#E2E2E9] p-4 rounded-xl flex flex-col justify-between shadow-sm">
         <div className="flex items-center justify-between">
           <span className="text-[10px] uppercase font-bold tracking-wider text-[#94A3B8] font-mono">Strongest Bullish Drive</span>
@@ -159,7 +144,7 @@ export default function StatsPanel({
                 {analytics.strongestBull.symbol.toUpperCase()}
               </div>
               <p className="text-[10px] text-[#64748B] mt-0.5 font-sans leading-tight">
-                Candle body height: <span className="font-bold text-[#166534]">+{analytics.strongestBull.bodySize.toFixed(2)}%</span>
+                Body height: <span className="font-bold text-[#166634]">+{analytics.strongestBull.bodySize.toFixed(2)}%</span>
               </p>
             </div>
           ) : (
@@ -171,7 +156,7 @@ export default function StatsPanel({
         </div>
       </div>
 
-      {/* 4. Strongest Bearish Drive */}
+      {/* 4. Strongest Bearish */}
       <div className="bg-white border border-[#E2E2E9] p-4 rounded-xl flex flex-col justify-between shadow-sm">
         <div className="flex items-center justify-between">
           <span className="text-[10px] uppercase font-bold tracking-wider text-[#94A3B8] font-mono">Strongest Bearish Crash</span>
@@ -184,7 +169,7 @@ export default function StatsPanel({
                 {analytics.strongestBear.symbol.toUpperCase()}
               </div>
               <p className="text-[10px] text-[#64748B] mt-0.5 font-sans leading-tight">
-                Candle body height: <span className="font-bold text-[#991B1B]">-{analytics.strongestBear.bodySize.toFixed(2)}%</span>
+                Body height: <span className="font-bold text-[#991B1B]">-{analytics.strongestBear.bodySize.toFixed(2)}%</span>
               </p>
             </div>
           ) : (
