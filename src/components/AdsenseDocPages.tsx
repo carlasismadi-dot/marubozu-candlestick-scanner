@@ -216,7 +216,7 @@ export default function AdsenseDocPages({ currentSubpage, setCurrentSubpage }: A
 
             <h4 className="text-[#1A1A1E] font-bold text-md uppercase tracking-wider border-b border-[#F1F5F9] pb-1.5 mt-6">Our Core Technology</h4>
             <p className="text-xs">
-              Unlike traditional scanning agencies that charge premium subscription fees for simple alert queries, Marubozu Scan Terminal was built on open-source principles. Our proprietary Wick Tolerance Engine permits granular filtering to offset standard micro-rejection volatility typical of cryptocurrency order queues. Our background crawlers cycle and analyze millions of data points, ensuring our statistics are backed by strict historical data streams.
+              Unlike traditional scanning platforms that charge premium subscription fees for simple alert queries, Marubozu Scan Terminal was built on open-source principles. All candlestick analysis runs directly in your browser — no server-side processing, no data intermediaries. Our client-side Wick Tolerance Engine permits granular filtering to offset standard micro-rejection volatility typical of cryptocurrency order queues. Live price data and kline history stream directly from Binance's public WebSocket and REST APIs, with zero API key requirement and no data bottleneck between you and the source.
             </p>
 
             <h4 className="text-[#1A1A1E] font-bold text-md uppercase tracking-wider border-b border-[#F1F5F9] pb-1.5 mt-6">Editorial Integrity</h4>
@@ -280,7 +280,7 @@ export default function AdsenseDocPages({ currentSubpage, setCurrentSubpage }: A
 
             <h4 className="font-bold text-[#1A1A1E] text-md mt-6 pb-1 border-b border-[#F1F5F9]">Rules of Platform Use</h4>
             <p>
-              Users are strictly forbidden from executing automated scraper scripts, web crawling bots, or high-velocity denial attacks against our public backend endpoints. Scraping CoinGecko's embedded framework via our server breaches standard fair-use agreements and will lead to an immediate, permanent IP block from our server relays.
+              Users are strictly forbidden from executing automated scraper scripts, web crawling bots, or high-velocity denial attacks against our public endpoints or any upstream data providers. Abusing Binance's public market data API through our interface in violation of Binance's fair-use terms may result in a permanent IP block from our service relays.
             </p>
 
             <h4 className="font-bold text-[#1A1A1E] text-md mt-6 pb-1 border-b border-[#F1F5F9]">Limitation of Liability</h4>
