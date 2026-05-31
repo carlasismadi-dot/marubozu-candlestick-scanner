@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export type Candle = [number, number, number, number, number]; // [timestamp, open, high, low, close]
+export type Candle = [number, number, number, number, number, number?]; // [timestamp, open, high, low, close, volume?]
 
 export interface CoinData {
   id: string;
@@ -12,10 +12,9 @@ export interface CoinData {
   image: string;
   current_price: number;
   market_cap: number;
-  market_cap_rank: number; // populated as index order from Binance (1-based)
+  market_cap_rank: number;
   total_volume: number;
   price_change_percentage_24h: number;
-  // Optional fields from CoinGecko that Binance doesn't supply
   fully_diluted_valuation?: number | null;
   high_24h?: number;
   low_24h?: number;
@@ -32,7 +31,6 @@ export interface CoinData {
   atl_change_percentage?: number;
   atl_date?: string;
   last_updated?: string;
-  // Binance-specific
   _binanceSymbol?: string;
 }
 
@@ -43,6 +41,12 @@ export interface MarubozuStatus {
   wickRatio: number;
   bodyPercent: number;
   candle: Candle | null;
+  /** 1–10 composite score: body size + wick tightness + volume surge */
+  strengthScore: number;
+  /** Volume of the signal candle vs 20-candle average (e.g. 2.4 = 2.4× avg) */
+  volumeRatio: number;
+  /** How many consecutive completed candles have been marubozu */
+  streak: number;
 }
 
 export interface CoinScanResult {
