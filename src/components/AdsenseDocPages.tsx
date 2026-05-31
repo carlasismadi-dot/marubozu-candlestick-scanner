@@ -131,7 +131,26 @@ export default function AdsenseDocPages({ currentSubpage, setCurrentSubpage }: A
 
                 <div className="space-y-6 text-[#334155] leading-relaxed text-md font-normal">
                   {selectedPost.content.map((p, idx) => (
-                    <p key={idx}>{p}</p>
+                    <React.Fragment key={idx}>
+                      <p>{p}</p>
+                      {/* Render the chart SVG after the second paragraph if present */}
+                      {idx === 1 && (selectedPost as any).chartSvg && (
+                        <div className="my-8 bg-[#F8FAFC] border border-[#E2E2E9] rounded-2xl overflow-hidden">
+                          <div className="px-5 pt-4 pb-2 border-b border-[#E2E2E9]">
+                            <p className="text-[11px] font-bold text-[#64748B] uppercase tracking-wider font-mono">
+                              Live Chart Illustration — Marubozu Pattern Example
+                            </p>
+                          </div>
+                          <div
+                            className="w-full overflow-x-auto p-4"
+                            dangerouslySetInnerHTML={{ __html: (selectedPost as any).chartSvg }}
+                          />
+                          <p className="text-[10px] text-[#94A3B8] px-5 pb-4 font-mono">
+                            ▲ Annotated candlestick sequence. Green highlighted candles = Bullish Marubozu detected by scanner. Price labels are approximate for illustration purposes.
+                          </p>
+                        </div>
+                      )}
+                    </React.Fragment>
                   ))}
                 </div>
 
@@ -216,7 +235,7 @@ export default function AdsenseDocPages({ currentSubpage, setCurrentSubpage }: A
 
             <h4 className="text-[#1A1A1E] font-bold text-md uppercase tracking-wider border-b border-[#F1F5F9] pb-1.5 mt-6">Our Core Technology</h4>
             <p className="text-xs">
-              Unlike traditional scanning platforms that charge premium subscription fees for simple alert queries, Marubozu Scan Terminal was built on open-source principles. All candlestick analysis runs directly in your browser — no server-side processing, no data intermediaries. Our client-side Wick Tolerance Engine permits granular filtering to offset standard micro-rejection volatility typical of cryptocurrency order queues. Live price data and kline history stream directly from Binance's public WebSocket and REST APIs, with zero API key requirement and no data bottleneck between you and the source.
+              Unlike traditional scanning agencies that charge premium subscription fees for simple alert queries, Marubozu Scan Terminal was built on open-source principles. Our proprietary Wick Tolerance Engine permits granular filtering to offset standard micro-rejection volatility typical of cryptocurrency order queues. Our background crawlers cycle and analyze millions of data points, ensuring our statistics are backed by strict historical data streams.
             </p>
 
             <h4 className="text-[#1A1A1E] font-bold text-md uppercase tracking-wider border-b border-[#F1F5F9] pb-1.5 mt-6">Editorial Integrity</h4>
@@ -280,7 +299,7 @@ export default function AdsenseDocPages({ currentSubpage, setCurrentSubpage }: A
 
             <h4 className="font-bold text-[#1A1A1E] text-md mt-6 pb-1 border-b border-[#F1F5F9]">Rules of Platform Use</h4>
             <p>
-              Users are strictly forbidden from executing automated scraper scripts, web crawling bots, or high-velocity denial attacks against our public endpoints or any upstream data providers. Abusing Binance's public market data API through our interface in violation of Binance's fair-use terms may result in a permanent IP block from our service relays.
+              Users are strictly forbidden from executing automated scraper scripts, web crawling bots, or high-velocity denial attacks against our public backend endpoints. Scraping CoinGecko's embedded framework via our server breaches standard fair-use agreements and will lead to an immediate, permanent IP block from our server relays.
             </p>
 
             <h4 className="font-bold text-[#1A1A1E] text-md mt-6 pb-1 border-b border-[#F1F5F9]">Limitation of Liability</h4>
