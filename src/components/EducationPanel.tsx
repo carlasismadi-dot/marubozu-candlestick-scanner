@@ -6,6 +6,7 @@
 import React from 'react';
 import { BookOpen, AlertTriangle, ShieldCheck, HelpCircle, ArrowRightLeft } from 'lucide-react';
 import { ScannerSettings } from '../types';
+import { trackSettingsChanged } from '../utils/analytics';
 
 interface EducationPanelProps {
   settings: ScannerSettings;
@@ -16,11 +17,13 @@ export default function EducationPanel({ settings, setSettings }: EducationPanel
   const handleWickChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseFloat(e.target.value);
     setSettings(prev => ({ ...prev, wickTolerance: val }));
+    trackSettingsChanged('wickTolerance', val);
   };
 
   const handleBodyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseFloat(e.target.value);
     setSettings(prev => ({ ...prev, minBodyPercent: val }));
+    trackSettingsChanged('minBodyPercent', val);
   };
 
   return (
