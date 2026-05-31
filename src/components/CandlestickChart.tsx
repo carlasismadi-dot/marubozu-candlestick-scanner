@@ -12,7 +12,16 @@ interface CandlestickChartProps {
   coin: CoinData | null;
   candles: Candle[];
   settings: ScannerSettings;
+  /** Now receives the interval string: '30m' | '4h' | '1d' */
   daysParam: string;
+}
+
+/** Human-readable label for the interval */
+function intervalLabel(daysParam: string): string {
+  if (daysParam === '30m') return '30M intervals';
+  if (daysParam === '4h')  return '4H intervals';
+  if (daysParam === '1d')  return '1D intervals';
+  return daysParam;
 }
 
 export default function CandlestickChart({
@@ -21,17 +30,15 @@ export default function CandlestickChart({
   settings,
   daysParam
 }: CandlestickChartProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef   = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(700);
-  const [zoomRange, setZoomRange] = useState<number>(40);
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-  const [mouseSvgY, setMouseSvgY] = useState(0); // Y in SVG coordinate space
+  const [zoomRange,     setZoomRange]       = useState<number>(40);
+  const [hoverIndex,    setHoverIndex]      = useState<number | null>(null);
+  const [mouseSvgY,     setMouseSvgY]       = useState(0);
 
-  // Fixed logical SVG dimensions — no stretching, just scales uniformly
   const SVG_HEIGHT = 420;
-  const padding = { top: 30, right: 75, bottom: 40, left: 20 };
+  const padding    = { top: 30, right: 75, bottom: 40, left: 20 };
 
-  // Track real container width so we can scale mouse coords correctly
   useEffect(() => {
     if (!containerRef.current) return;
     const observer = new ResizeObserver((entries) => {
@@ -42,10 +49,9 @@ export default function CandlestickChart({
     return () => observer.disconnect();
   }, []);
 
-  // SVG logical width matches container — no stretching
-  const SVG_WIDTH = containerWidth;
-  const chartWidth = SVG_WIDTH - padding.left - padding.right;
-  const chartHeight = SVG_HEIGHT - padding.top - padding.bottom;
+  const SVG_WIDTH  = containerWidth;
+  const chartWidth  = SVG_WIDTH  - padding.left - padding.right;
+  const chartHeight = SVG_HEIGHT - padding.top  - padding.bottom;
 
   const visibleCandles = useMemo(() => {
     if (candles.length === 0) return [];
@@ -61,10 +67,10 @@ export default function CandlestickChart({
 
   const priceEnvelope = useMemo(() => {
     if (visibleCandles.length === 0) return { min: 0, max: 100 };
-    let minPrice = Infinity;
+    let minPrice =  Infinity;
     let maxPrice = -Infinity;
     visibleCandles.forEach(([_, open, high, low]) => {
-      if (low < minPrice) minPrice = low;
+      if (low  < minPrice) minPrice = low;
       if (high > maxPrice) maxPrice = high;
     });
     const pad = (maxPrice - minPrice) * 0.08 || 5;
@@ -82,33 +88,18 @@ export default function CandlestickChart({
     return padding.top + chartHeight - ((price - priceEnvelope.min) / range) * chartHeight;
   };
 
-  // Convert real mouse position → SVG logical coordinates
-  // This is the key fix: scale by (SVG_WIDTH / rendered width)
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
     if (visibleCandles.length === 0) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-
-    // Scale factors from rendered pixels → SVG logical units
-    const scaleX = SVG_WIDTH / rect.width;
+    const rect   = e.currentTarget.getBoundingClientRect();
+    const scaleX = SVG_WIDTH  / rect.width;
     const scaleY = SVG_HEIGHT / rect.height;
-
-    const svgX = (e.clientX - rect.left) * scaleX;
-    const svgY = (e.clientY - rect.top) * scaleY;
-
+    const svgX   = (e.clientX - rect.left) * scaleX;
+    const svgY   = (e.clientY - rect.top)  * scaleY;
     setMouseSvgY(svgY);
-
     const x = svgX - padding.left;
-    if (x < 0 || x > chartWidth) {
-      setHoverIndex(null);
-      return;
-    }
-
+    if (x < 0 || x > chartWidth) { setHoverIndex(null); return; }
     const index = Math.round((x / chartWidth) * (visibleCandles.length - 1));
-    if (index >= 0 && index < visibleCandles.length) {
-      setHoverIndex(index);
-    } else {
-      setHoverIndex(null);
-    }
+    setHoverIndex(index >= 0 && index < visibleCandles.length ? index : null);
   };
 
   const handleMouseLeave = () => setHoverIndex(null);
@@ -122,17 +113,20 @@ export default function CandlestickChart({
 
   const activeHoverCandleData = useMemo(() => {
     if (hoverIndex === null || hoverIndex >= visibleCandles.length) return null;
-    const candle = visibleCandles[hoverIndex];
+    const candle  = visibleCandles[hoverIndex];
     const pattern = candlePatterns[hoverIndex];
     const [time, open, high, low, close] = candle;
     const bodySize = Math.abs(close - open);
-    const range = high - low;
-    const bodyPct = (bodySize / open) * 100;
-    const wickPct = range > 0 ? ((range - bodySize) / range) * 100 : 0;
+    const range    = high - low;
+    const bodyPct  = (bodySize / open) * 100;
+    const wickPct  = range > 0 ? ((range - bodySize) / range) * 100 : 0;
     return { pattern, bodyPct, wickPct, time, open, high, low, close };
   }, [hoverIndex, visibleCandles, candlePatterns]);
 
-  const fmt = (v: number) => v < 1 ? v.toFixed(4) : v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmt = (v: number) =>
+    v < 1
+      ? v.toFixed(4)
+      : v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   return (
     <div id="interactive-chart-section" className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col">
@@ -141,12 +135,20 @@ export default function CandlestickChart({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-slate-800 mb-4">
         <div>
           <div className="flex items-center gap-2">
-            {coin && <img src={coin.image} alt={coin.name} className="w-5 h-5 rounded-full" referrerPolicy="no-referrer" />}
+            {coin && (
+              <img
+                src={coin.image}
+                alt={coin.name}
+                className="w-5 h-5 rounded-full"
+                referrerPolicy="no-referrer"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+            )}
             <h3 className="text-md font-bold text-slate-100 uppercase tracking-tight">
               {coin ? `${coin.name} (${coin.symbol.toUpperCase()})` : 'Candlestick Blueprint'}
             </h3>
             <span className="text-slate-500 font-mono text-xs">
-              {daysParam === '1' ? '30M intervals' : daysParam === '7' ? '4H intervals' : '1D intervals'}
+              {intervalLabel(daysParam)}
             </span>
           </div>
           <div className="text-[11px] text-slate-400 mt-1 flex items-center gap-1.5 flex-wrap">
@@ -163,13 +165,21 @@ export default function CandlestickChart({
         </div>
 
         <div className="flex items-center gap-1 bg-slate-950 p-1 border border-slate-800 rounded-xl self-start sm:self-center">
-          <button onClick={() => setZoomRange(prev => Math.min(prev + 10, candles.length || 100))}
-            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-900 rounded-lg transition" title="Zoom Out">
+          <button
+            onClick={() => setZoomRange(prev => Math.min(prev + 10, candles.length || 100))}
+            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-900 rounded-lg transition"
+            title="Zoom Out"
+          >
             <ZoomOut className="w-4 h-4" />
           </button>
-          <span className="text-slate-400 text-xs font-mono px-2 font-bold select-none">{zoomRange} candles</span>
-          <button onClick={() => setZoomRange(prev => Math.max(prev - 10, 10))}
-            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-900 rounded-lg transition" title="Zoom In">
+          <span className="text-slate-400 text-xs font-mono px-2 font-bold select-none">
+            {zoomRange} candles
+          </span>
+          <button
+            onClick={() => setZoomRange(prev => Math.max(prev - 10, 10))}
+            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-900 rounded-lg transition"
+            title="Zoom In"
+          >
             <ZoomIn className="w-4 h-4" />
           </button>
         </div>
@@ -180,7 +190,7 @@ export default function CandlestickChart({
           <div className="w-12 h-12 border-4 border-slate-800 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
           <p className="text-slate-300 text-sm font-semibold">Resolving Candle Streams...</p>
           <p className="text-slate-500 text-xs mt-1 max-w-xs leading-relaxed">
-            Background worker is fetching data. Please wait a few seconds.
+            Fetching live data from Binance. Please wait a few seconds.
           </p>
         </div>
       ) : (
@@ -244,12 +254,7 @@ export default function CandlestickChart({
             )}
           </div>
 
-          {/* SVG Chart Canvas
-              - containerRef measures real pixel width
-              - SVG viewBox matches logical SVG_WIDTH × SVG_HEIGHT exactly
-              - preserveAspectRatio="xMidYMid meet" keeps proportions, no stretch
-              - Mouse coords scaled by (SVG_WIDTH / rect.width) for accuracy
-          */}
+          {/* SVG Chart Canvas */}
           <div
             ref={containerRef}
             className="w-full bg-slate-950 border border-slate-800 rounded-2xl relative select-none overflow-hidden"
@@ -265,16 +270,16 @@ export default function CandlestickChart({
             >
               <defs>
                 <linearGradient id="grid-fade" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#1e293b" stopOpacity="0" />
-                  <stop offset="8%" stopColor="#1e293b" stopOpacity="0.5" />
-                  <stop offset="92%" stopColor="#1e293b" stopOpacity="0.5" />
-                  <stop offset="100%" stopColor="#1e293b" stopOpacity="0" />
+                  <stop offset="0%"   stopColor="#1e293b" stopOpacity="0"   />
+                  <stop offset="8%"   stopColor="#1e293b" stopOpacity="0.5" />
+                  <stop offset="92%"  stopColor="#1e293b" stopOpacity="0.5" />
+                  <stop offset="100%" stopColor="#1e293b" stopOpacity="0"   />
                 </linearGradient>
               </defs>
 
-              {/* Horizontal price grid lines */}
+              {/* Horizontal price grid */}
               {Array.from({ length: 6 }).map((_, i) => {
-                const yVal = padding.top + (i / 5) * chartHeight;
+                const yVal  = padding.top + (i / 5) * chartHeight;
                 const price = priceEnvelope.max - (i / 5) * (priceEnvelope.max - priceEnvelope.min);
                 return (
                   <g key={`grid-y-${i}`}>
@@ -307,46 +312,45 @@ export default function CandlestickChart({
               {/* Candlesticks */}
               {visibleCandles.map((candle, idx) => {
                 const [, open, high, low, close] = candle;
-                const xc = getX(idx);
-                const yo = getY(open);
-                const yc = getY(close);
-                const yh = getY(high);
-                const yl = getY(low);
+                const xc        = getX(idx);
+                const yo        = getY(open);
+                const yc        = getY(close);
+                const yh        = getY(high);
+                const yl        = getY(low);
                 const isBullish = close >= open;
-                const top = Math.min(yo, yc);
-                const bodyH = Math.max(Math.abs(yc - yo), 1.5);
-                const scanType = candlePatterns[idx].type;
+                const top       = Math.min(yo, yc);
+                const bodyH     = Math.max(Math.abs(yc - yo), 1.5);
+                const scanType  = candlePatterns[idx].type;
                 const isMarubozu = scanType !== 'none';
-                const isHovered = hoverIndex === idx;
-                const barWidth = Math.max((chartWidth / visibleCandles.length) * 0.7, 2);
+                const isHovered  = hoverIndex === idx;
+                const barWidth   = Math.max((chartWidth / visibleCandles.length) * 0.7, 2);
 
-                const wickColor = isMarubozu
-                  ? (scanType === 'bullish' ? '#059669' : '#dc2626')
-                  : (isBullish ? '#34d399' : '#f87171');
-                const bodyFill = isMarubozu
-                  ? (scanType === 'bullish' ? 'rgba(16,185,129,0.95)' : 'rgba(239,68,68,0.95)')
-                  : (isBullish ? 'rgba(52,211,153,0.4)' : 'rgba(248,113,113,0.4)');
+                const wickColor  = isMarubozu
+                  ? (scanType === 'bullish' ? '#059669'              : '#dc2626')
+                  : (isBullish              ? '#34d399'              : '#f87171');
+                const bodyFill   = isMarubozu
+                  ? (scanType === 'bullish' ? 'rgba(16,185,129,0.95)': 'rgba(239,68,68,0.95)')
+                  : (isBullish              ? 'rgba(52,211,153,0.4)' : 'rgba(248,113,113,0.4)');
                 const bodyStroke = isMarubozu
-                  ? (scanType === 'bullish' ? '#10b981' : '#ef4444')
-                  : (isBullish ? '#34d399' : '#f87171');
+                  ? (scanType === 'bullish' ? '#10b981'              : '#ef4444')
+                  : (isBullish              ? '#34d399'              : '#f87171');
 
                 return (
                   <g key={`c-${idx}`}>
-                    {/* Wick */}
-                    <line x1={xc} y1={yh} x2={xc} y2={yl} stroke={wickColor} strokeWidth={isMarubozu ? 2 : 1.2} />
-                    {/* Body */}
+                    <line x1={xc} y1={yh} x2={xc} y2={yl}
+                      stroke={wickColor} strokeWidth={isMarubozu ? 2 : 1.2} />
                     <rect x={xc - barWidth / 2} y={top} width={barWidth} height={bodyH}
                       fill={bodyFill} stroke={bodyStroke}
                       strokeWidth={isHovered ? 2 : isMarubozu ? 1.5 : 1} rx={1} />
-                    {/* Marubozu highlight ring */}
                     {isMarubozu && (
                       <rect x={xc - barWidth} y={yh - 3} width={barWidth * 2} height={(yl - yh) + 6}
-                        fill="none" stroke={scanType === 'bullish' ? '#059669' : '#dc2626'}
+                        fill="none"
+                        stroke={scanType === 'bullish' ? '#059669' : '#dc2626'}
                         strokeWidth={1} strokeDasharray="2 2" opacity={0.6} rx={2} />
                     )}
-                    {/* Label */}
                     {isMarubozu && bodyH > 12 && (
-                      <text x={xc} y={top - 5} fill={scanType === 'bullish' ? '#34d399' : '#f87171'}
+                      <text x={xc} y={top - 5}
+                        fill={scanType === 'bullish' ? '#34d399' : '#f87171'}
                         fontSize={7} fontFamily="monospace" fontWeight="bold" textAnchor="middle">
                         {scanType === 'bullish' ? 'B-MZ' : 'S-MZ'}
                       </text>
@@ -355,7 +359,7 @@ export default function CandlestickChart({
                 );
               })}
 
-              {/* Crosshair — coords already in SVG space, no scaling needed */}
+              {/* Crosshair */}
               {hoverIndex !== null && hoverIndex < visibleCandles.length && (
                 <g>
                   <line x1={getX(hoverIndex)} y1={padding.top} x2={getX(hoverIndex)} y2={padding.top + chartHeight}
