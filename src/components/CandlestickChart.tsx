@@ -23,11 +23,11 @@ export default function CandlestickChart({
 }: CandlestickChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 700, height: 420 });
-  const [zoomRange, setZoomRange] = useState<number>(40); // Number of candles visible from the end
+  const [zoomRange, setZoomRange] = useState<number>(40);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Monitor resize safely using ResizeObserver
+  // Monitor resize — read the ACTUAL rendered size of the container div
   useEffect(() => {
     if (!containerRef.current) return;
     const observer = new ResizeObserver((entries) => {
@@ -35,22 +35,20 @@ export default function CandlestickChart({
       const { width, height } = entries[0].contentRect;
       setDimensions({
         width: Math.max(width, 300),
-        height: Math.max(height, 350)
+        // Keep a taller fixed height so candles have room vertically
+        height: Math.max(height, 400)
       });
     });
     observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
 
-  // Filter candles based on visible zoom range from the end
   const visibleCandles = useMemo(() => {
     if (candles.length === 0) return [];
-    // Ensure we don't request more candles than available
     const count = Math.min(zoomRange, candles.length);
     return candles.slice(candles.length - count);
   }, [candles, zoomRange]);
 
-  // Map each visible candle to its index in the original candles array
   const originalIndices = useMemo(() => {
     if (candles.length === 0) return [];
     const count = Math.min(zoomRange, candles.length);
@@ -61,26 +59,20 @@ export default function CandlestickChart({
     return result;
   }, [candles, zoomRange]);
 
-  // Compute price envelope for the Y axis
   const priceEnvelope = useMemo(() => {
     if (visibleCandles.length === 0) return { min: 0, max: 100 };
     let minPrice = Infinity;
     let maxPrice = -Infinity;
-    let maxVolume = 0;
 
     visibleCandles.forEach(([_, open, high, low, close]) => {
       if (low < minPrice) minPrice = low;
       if (high > maxPrice) maxPrice = high;
     });
 
-    const pad = (maxPrice - minPrice) * 0.08 || 5; // padding factor
-    return {
-      min: minPrice - pad,
-      max: maxPrice + pad
-    };
+    const pad = (maxPrice - minPrice) * 0.08 || 5;
+    return { min: minPrice - pad, max: maxPrice + pad };
   }, [visibleCandles]);
 
-  // SVG Coordinates transformations
   const padding = { top: 30, right: 70, bottom: 40, left: 20 };
   const chartWidth = dimensions.width - padding.left - padding.right;
   const chartHeight = dimensions.height - padding.top - padding.bottom;
@@ -93,12 +85,10 @@ export default function CandlestickChart({
   const getY = (price: number) => {
     const range = priceEnvelope.max - priceEnvelope.min;
     if (range === 0) return padding.top + chartHeight / 2;
-    // Lower price = higher pixel coordinates (SVG Y increases downwards)
     const factor = (price - priceEnvelope.min) / range;
     return padding.top + chartHeight - factor * chartHeight;
   };
 
-  // Convert client cursor coords back to nearest candle index
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
     if (!containerRef.current || visibleCandles.length === 0) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -121,16 +111,11 @@ export default function CandlestickChart({
     }
   };
 
-  const handleMouseLeave = () => {
-    setHoverIndex(null);
-  };
+  const handleMouseLeave = () => setHoverIndex(null);
 
-  // Identify whether a visible candle represents a Marubozu
   const candlePatterns = useMemo(() => {
     return visibleCandles.map(([time, open, high, low, close], idx) => {
-      // Create isolated historical segment up to this index to feed into scanner
       const historicalSubArray = candles.slice(0, originalIndices[idx] + 1);
-      // We pass checkCompleted=false here, because we want status of THIS specific historical candle
       return detectMarubozu(historicalSubArray, settings, false);
     });
   }, [visibleCandles, candles, originalIndices, settings]);
@@ -149,33 +134,17 @@ export default function CandlestickChart({
     const bodyPct = (bodyHeight / open) * 100;
     const wickPct = ((range - bodyHeight) / range) * 100;
 
-    return {
-      price: candle,
-      pattern,
-      bodyPct,
-      wickPct,
-      time,
-      open,
-      high,
-      low,
-      close,
-      range
-    };
+    return { price: candle, pattern, bodyPct, wickPct, time, open, high, low, close, range };
   }, [hoverIndex, visibleCandles, originalIndices, candlePatterns]);
 
   return (
-    <div id="interactive-chart-section" className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col h-full">
+    <div id="interactive-chart-section" className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl flex flex-col">
       {/* Header Info */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-slate-800 mb-4">
         <div>
           <div className="flex items-center gap-2">
             {coin ? (
-              <img
-                src={coin.image}
-                alt={coin.name}
-                className="w-5 h-5 rounded-full"
-                referrerPolicy="no-referrer"
-              />
+              <img src={coin.image} alt={coin.name} className="w-5 h-5 rounded-full" referrerPolicy="no-referrer" />
             ) : null}
             <h3 className="text-md font-bold text-slate-100 uppercase tracking-tight">
               {coin ? `${coin.name} (${coin.symbol.toUpperCase()})` : 'Candlestick Blueprint'}
@@ -185,7 +154,9 @@ export default function CandlestickChart({
             </span>
           </div>
           <div className="text-[11px] text-slate-400 mt-1 flex items-center gap-1.5 flex-wrap">
-            <span className="inline-flex items-center gap-1"><Cpu className="w-3 h-3 text-blue-400" /> Client-side scanned w/ tolerance</span>
+            <span className="inline-flex items-center gap-1">
+              <Cpu className="w-3 h-3 text-blue-400" /> Client-side scanned w/ tolerance
+            </span>
             <span className="inline-flex items-center px-1.5 py-0.2 bg-slate-950 border border-slate-800 rounded font-mono text-[10px] text-yellow-400">
               Wick Max: {(settings.wickTolerance * 100).toFixed(0)}%
             </span>
@@ -195,7 +166,6 @@ export default function CandlestickChart({
           </div>
         </div>
 
-        {/* Zoom range buttons */}
         <div className="flex items-center gap-1 bg-slate-950 p-1 border border-slate-800 rounded-xl self-start sm:self-center">
           <button
             onClick={() => setZoomRange(prev => Math.min(prev + 10, candles.length || 100))}
@@ -218,17 +188,17 @@ export default function CandlestickChart({
       </div>
 
       {candles.length === 0 ? (
-        <div className="flex-grow flex flex-col items-center justify-center py-24 text-center">
+        <div className="flex flex-col items-center justify-center py-24 text-center">
           <div className="w-12 h-12 border-4 border-slate-800 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
-          <p className="text-slate-300 text-sm font-semibold">Resolving CoinGecko Candle Streams...</p>
+          <p className="text-slate-300 text-sm font-semibold">Resolving Candle Streams...</p>
           <p className="text-slate-500 text-xs mt-1 max-w-xs leading-relaxed">
             Please wait up to 10 seconds. The background worker cycles requests sequentially to protect API limits.
           </p>
         </div>
       ) : (
-        <div className="flex-grow flex flex-col gap-4">
-          
-          {/* Active / Hover OHLC Info Strip */}
+        <div className="flex flex-col gap-4">
+
+          {/* OHLC Info Strip */}
           <div className="bg-slate-950 border border-slate-800/80 p-3.5 rounded-2xl grid grid-cols-2 lg:grid-cols-5 gap-3">
             {activeHoverCandleData ? (
               <>
@@ -286,15 +256,19 @@ export default function CandlestickChart({
             )}
           </div>
 
-          {/* SVG Canvas Area */}
-          <div ref={containerRef} className="flex-grow w-full h-[320px] bg-slate-950 border border-slate-800 rounded-2xl relative select-none">
+          {/* SVG Canvas — FIX: no fixed height, let it grow; SVG uses viewBox not fixed w/h */}
+          <div
+            ref={containerRef}
+            className="w-full bg-slate-950 border border-slate-800 rounded-2xl relative select-none"
+            style={{ height: '420px' }}
+          >
             <svg
               id="chart-svg"
-              width={dimensions.width}
-              height={dimensions.height}
+              viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
+              preserveAspectRatio="none"
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="absolute inset-0 w-full h-full cursor-crosshair overflow-hidden"
+              className="absolute inset-0 w-full h-full cursor-crosshair"
             >
               <defs>
                 <linearGradient id="gradient-grid-horizontal" x1="0" y1="0" x2="1" y2="0">
@@ -312,21 +286,14 @@ export default function CandlestickChart({
                 return (
                   <g key={`grid-y-${i}`}>
                     <line
-                      x1={padding.left}
-                      y1={yVal}
-                      x2={dimensions.width - padding.right}
-                      y2={yVal}
+                      x1={padding.left} y1={yVal}
+                      x2={dimensions.width - padding.right} y2={yVal}
                       stroke="url(#gradient-grid-horizontal)"
-                      strokeWidth={1}
-                      strokeDasharray="4 4"
+                      strokeWidth={1} strokeDasharray="4 4"
                     />
                     <text
-                      x={dimensions.width - padding.right + 8}
-                      y={yVal + 3}
-                      fill="#64748b"
-                      fontSize={9}
-                      fontFamily="monospace"
-                      textAnchor="start"
+                      x={dimensions.width - padding.right + 8} y={yVal + 3}
+                      fill="#64748b" fontSize={9} fontFamily="monospace" textAnchor="start"
                     >
                       ${price >= 1 ? price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : price.toFixed(4)}
                     </text>
@@ -334,36 +301,21 @@ export default function CandlestickChart({
                 );
               })}
 
-              {/* Horizontal Timeline Labels */}
+              {/* Timeline Labels */}
               {visibleCandles.map(([time], idx) => {
-                // Show label for every 8th candle, or the first/last
                 if (idx % 8 !== 0 && idx !== visibleCandles.length - 1) return null;
                 const xc = getX(idx);
                 return (
                   <g key={`timeline-${idx}`}>
-                    <line
-                      x1={xc}
-                      y1={padding.top}
-                      x2={xc}
-                      y2={padding.top + chartHeight}
-                      stroke="#1e293b"
-                      strokeWidth={0.5}
-                    />
-                    <text
-                      x={xc}
-                      y={padding.top + chartHeight + 18}
-                      fill="#64748b"
-                      fontSize={8}
-                      fontFamily="monospace"
-                      textAnchor="middle"
-                    >
+                    <line x1={xc} y1={padding.top} x2={xc} y2={padding.top + chartHeight} stroke="#1e293b" strokeWidth={0.5} />
+                    <text x={xc} y={padding.top + chartHeight + 18} fill="#64748b" fontSize={8} fontFamily="monospace" textAnchor="middle">
                       {formatTimeLabel(time, daysParam)}
                     </text>
                   </g>
                 );
               })}
 
-              {/* Candlesticks & Marubozu Highlights */}
+              {/* Candlesticks */}
               {visibleCandles.map((candle, idx) => {
                 const [time, open, high, low, close] = candle;
                 const xc = getX(idx);
@@ -376,17 +328,14 @@ export default function CandlestickChart({
                 const top = Math.min(yo, yc);
                 const bottom = Math.max(yo, yc);
                 const bodyHeight = Math.max(bottom - top, 1.5);
-                
-                // Determine candle coloring
+
                 const scanType = candlePatterns[idx].type;
                 const isHoveredSlot = hoverIndex === idx;
+                const isMarubozu = scanType !== 'none';
 
                 let wickColor = isBullish ? '#34d399' : '#f87171';
                 let bodyFill = isBullish ? 'rgba(52, 211, 153, 0.4)' : 'rgba(248, 113, 113, 0.4)';
                 let bodyStroke = isBullish ? '#34d399' : '#f87171';
-
-                // Golden glow highlighting for identified Marubozu candles
-                const isMarubozu = scanType !== 'none';
 
                 if (isMarubozu) {
                   wickColor = scanType === 'bullish' ? '#059669' : '#dc2626';
@@ -398,55 +347,27 @@ export default function CandlestickChart({
 
                 return (
                   <g key={`candle-${idx}`} id={`candle-group-${idx}`}>
-                    {/* Shadow / Wick */}
-                    <line
-                      x1={xc}
-                      y1={yh}
-                      x2={xc}
-                      y2={yl}
-                      stroke={wickColor}
-                      strokeWidth={isMarubozu ? 2 : 1.2}
-                    />
-
-                    {/* Candlestick Body */}
+                    <line x1={xc} y1={yh} x2={xc} y2={yl} stroke={wickColor} strokeWidth={isMarubozu ? 2 : 1.2} />
                     <rect
-                      x={xc - barWidth / 2}
-                      y={top}
-                      width={barWidth}
-                      height={bodyHeight}
-                      fill={bodyFill}
-                      stroke={bodyStroke}
+                      x={xc - barWidth / 2} y={top} width={barWidth} height={bodyHeight}
+                      fill={bodyFill} stroke={bodyStroke}
                       strokeWidth={isHoveredSlot ? 2 : isMarubozu ? 1.5 : 1}
-                      rx={1}
-                      style={{ transition: 'all 0.15s ease' }}
+                      rx={1} style={{ transition: 'all 0.15s ease' }}
                     />
-
-                    {/* Highlight Marubozu Rings around the entire candle range */}
                     {isMarubozu && (
                       <rect
-                        x={xc - barWidth * 0.9}
-                        y={yh - 4}
-                        width={barWidth * 1.8}
-                        height={(yl - yh) + 8}
+                        x={xc - barWidth * 0.9} y={yh - 4}
+                        width={barWidth * 1.8} height={(yl - yh) + 8}
                         fill="none"
                         stroke={scanType === 'bullish' ? '#059669' : '#dc2626'}
-                        strokeWidth={1}
-                        strokeDasharray="2 2"
-                        opacity={0.7}
-                        rx={3}
+                        strokeWidth={1} strokeDasharray="2 2" opacity={0.7} rx={3}
                       />
                     )}
-
-                    {/* Subtle text notation overlay */}
                     {isMarubozu && bodyHeight > 15 && (
                       <text
-                        x={xc}
-                        y={top - 6}
+                        x={xc} y={top - 6}
                         fill={scanType === 'bullish' ? '#34d399' : '#f87171'}
-                        fontSize={7}
-                        fontFamily="monospace"
-                        fontWeight="bold"
-                        textAnchor="middle"
+                        fontSize={7} fontFamily="monospace" fontWeight="bold" textAnchor="middle"
                       >
                         {scanType === 'bullish' ? 'B-MZ' : 'S-MZ'}
                       </text>
@@ -455,39 +376,12 @@ export default function CandlestickChart({
                 );
               })}
 
-              {/* Cursor Crosshair Line (Hover Mode) */}
+              {/* Crosshair */}
               {hoverIndex !== null && hoverIndex < visibleCandles.length && (
                 <g id="chart-crosshair">
-                  {/* Vertical Crosshair Line */}
-                  <line
-                    x1={getX(hoverIndex)}
-                    y1={padding.top}
-                    x2={getX(hoverIndex)}
-                    y2={padding.top + chartHeight}
-                    stroke="#475569"
-                    strokeWidth={1}
-                    strokeDasharray="3 3"
-                  />
-                  {/* Horizontal Crosshair Line */}
-                  <line
-                    x1={padding.left}
-                    y1={mousePos.y}
-                    x2={dimensions.width - padding.right}
-                    y2={mousePos.y}
-                    stroke="#475569"
-                    strokeWidth={1}
-                    strokeDasharray="3 3"
-                  />
-                  
-                  {/* Floating index pointer */}
-                  <circle
-                    cx={getX(hoverIndex)}
-                    cy={getY(visibleCandles[hoverIndex][4])} // snap to Close value
-                    r={4}
-                    fill="#3b82f6"
-                    stroke="#ffffff"
-                    strokeWidth={1.5}
-                  />
+                  <line x1={getX(hoverIndex)} y1={padding.top} x2={getX(hoverIndex)} y2={padding.top + chartHeight} stroke="#475569" strokeWidth={1} strokeDasharray="3 3" />
+                  <line x1={padding.left} y1={mousePos.y} x2={dimensions.width - padding.right} y2={mousePos.y} stroke="#475569" strokeWidth={1} strokeDasharray="3 3" />
+                  <circle cx={getX(hoverIndex)} cy={getY(visibleCandles[hoverIndex][4])} r={4} fill="#3b82f6" stroke="#ffffff" strokeWidth={1.5} />
                 </g>
               )}
             </svg>
