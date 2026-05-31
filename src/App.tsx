@@ -163,6 +163,14 @@ export default function App() {
   const [wsStatus, setWsStatus]                     = useState<'connecting' | 'live' | 'error'>('connecting');
   const [candlesCached, setCandlesCached]           = useState<number>(0);
   const [activeSubpage, setActiveSubpage]           = useState<'blog' | 'about' | 'privacy' | 'terms' | null>(null);
+  const [showGuide, setShowGuide]                   = useState<boolean>(
+    () => localStorage.getItem('marubozu_guide_dismissed') !== 'true'
+  );
+
+  const dismissGuide = useCallback(() => {
+    localStorage.setItem('marubozu_guide_dismissed', 'true');
+    setShowGuide(false);
+  }, []);
 
   const wsRef         = useRef<WebSocket | null>(null);
   const reconnectRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -510,6 +518,116 @@ export default function App() {
           <AdsenseDocPages currentSubpage={activeSubpage} setCurrentSubpage={setActiveSubpage} />
         ) : (
           <div className="max-w-7xl mx-auto space-y-6">
+
+            {/* ── How to Use Banner ── */}
+            {showGuide && (
+              <div className="relative bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700 rounded-2xl p-6 shadow-lg overflow-hidden">
+                {/* subtle grid texture */}
+                <div className="absolute inset-0 opacity-5"
+                  style={{ backgroundImage: 'repeating-linear-gradient(0deg,#fff 0,#fff 1px,transparent 1px,transparent 32px),repeating-linear-gradient(90deg,#fff 0,#fff 1px,transparent 1px,transparent 32px)' }} />
+
+                <div className="relative">
+                  {/* Header row */}
+                  <div className="flex items-start justify-between gap-4 mb-5">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-mono font-bold px-2 py-0.5 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full uppercase tracking-wider">
+                          Quick Start Guide
+                        </span>
+                      </div>
+                      <h2 className="text-white font-extrabold text-lg tracking-tight leading-tight">
+                        How to Use Marubozu Scanner
+                      </h2>
+                      <p className="text-slate-400 text-xs mt-1">
+                        Spot high-momentum crypto breakouts in 3 simple steps — no account needed.
+                      </p>
+                    </div>
+                    <button
+                      onClick={dismissGuide}
+                      className="shrink-0 text-slate-500 hover:text-white transition p-1.5 rounded-lg hover:bg-slate-700 border border-transparent hover:border-slate-600"
+                      title="Dismiss"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Steps */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {[
+                      {
+                        step: '01',
+                        color: 'blue',
+                        title: 'Pick a Timeframe',
+                        body: 'Use the 30M tab for intraday scalping, 4H for swing trades, or 1D for longer position entries. The scanner updates live via WebSocket.',
+                        icon: (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                          </svg>
+                        ),
+                      },
+                      {
+                        step: '02',
+                        color: 'emerald',
+                        title: 'Read the Pattern Status',
+                        body: 'A green BULLISH badge means buyers controlled the entire candle — open to close — with almost no wicks. Red BEARISH means sellers dominated. Neutral means no strong signal.',
+                        icon: (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+                          </svg>
+                        ),
+                      },
+                      {
+                        step: '03',
+                        color: 'purple',
+                        title: 'Tune the Parameters',
+                        body: 'Adjust Wick Tolerance and Min Body Height in the Pattern Parameters panel. Lower wick tolerance = stricter, textbook Marubozus only. Higher = more signals.',
+                        icon: (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
+                          </svg>
+                        ),
+                      },
+                    ].map(({ step, color, title, body, icon }) => (
+                      <div key={step} className={`bg-slate-950/60 border border-slate-700/60 rounded-xl p-4 flex flex-col gap-3`}>
+                        <div className="flex items-center gap-2.5">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0
+                            ${color === 'blue'    ? 'bg-blue-500/15 text-blue-400 border border-blue-500/20'   : ''}
+                            ${color === 'emerald' ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20' : ''}
+                            ${color === 'purple'  ? 'bg-purple-500/15 text-purple-400 border border-purple-500/20'  : ''}
+                          `}>
+                            {icon}
+                          </div>
+                          <span className={`text-[10px] font-black font-mono tracking-widest
+                            ${color === 'blue'    ? 'text-blue-500'    : ''}
+                            ${color === 'emerald' ? 'text-emerald-500' : ''}
+                            ${color === 'purple'  ? 'text-purple-500'  : ''}
+                          `}>STEP {step}</span>
+                        </div>
+                        <div>
+                          <h3 className="text-white font-bold text-sm leading-tight mb-1">{title}</h3>
+                          <p className="text-slate-400 text-[11px] leading-relaxed">{body}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Footer hint */}
+                  <div className="mt-4 pt-4 border-t border-slate-700/50 flex items-center justify-between flex-wrap gap-3">
+                    <p className="text-slate-500 text-[10px] font-mono">
+                      💡 Click any coin row to load its chart. Live alerts fire automatically when a new Marubozu forms.
+                    </p>
+                    <button
+                      onClick={dismissGuide}
+                      className="text-[10px] font-semibold text-slate-400 hover:text-white border border-slate-700 hover:border-slate-500 px-3 py-1.5 rounded-lg transition font-mono"
+                    >
+                      Got it — hide this
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <StatsPanel
               coins={coins}
