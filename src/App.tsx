@@ -18,6 +18,7 @@ import StatsPanel from './components/StatsPanel';
 import NotificationCenter from './components/NotificationCenter';
 import AdsenseDocPages from './components/AdsenseDocPages';
 import { RefreshCw, Shield, Database, Cpu } from 'lucide-react';
+import { startEngagementTimer, clearEngagementTimer } from './utils/analytics';
 
 // ─── Binance Configuration ────────────────────────────────────────────────────
 
@@ -129,11 +130,12 @@ async function fetchBinanceKlines(
 
   // Binance kline: [openTime, open, high, low, close, volume, ...]
   return raw.map((k) => [
-    Number(k[0]),   // timestamp (ms)
+    Number(k[0]),     // timestamp (ms)
     parseFloat(k[1]), // open
     parseFloat(k[2]), // high
     parseFloat(k[3]), // low
     parseFloat(k[4]), // close
+    parseFloat(k[5]), // volume (base asset)
   ]) as Candle[];
 }
 
@@ -299,6 +301,7 @@ export default function App() {
           parseFloat(k.h),
           parseFloat(k.l),
           parseFloat(k.c),
+          parseFloat(k.v), // volume (base asset)
         ];
 
         setOhlcRecords(prev => {
@@ -343,6 +346,12 @@ export default function App() {
   useEffect(() => {
     bootstrapData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Engagement timer — fires GA4 event after 2 minutes on page
+  useEffect(() => {
+    startEngagementTimer();
+    return () => clearEngagementTimer();
+  }, []);
 
   // Connect/reconnect WebSocket when timeframe changes
   useEffect(() => {
@@ -701,16 +710,4 @@ export default function App() {
               { key: 'terms',   label: 'Terms of Use'      },
             ] as const).map(({ key, label }, i, arr) => (
               <React.Fragment key={String(key)}>
-                <button onClick={() => setActiveSubpage(key)} className="text-[#64748B] hover:text-[#1A1A1E] transition">
-                  {label}
-                </button>
-                {i < arr.length - 1 && <span className="text-[#E2E2E9] select-none">|</span>}
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </footer>
-
-    </div>
-  );
-}
+                <button onClick={() => set
