@@ -710,4 +710,16 @@ export default function App() {
               { key: 'terms',   label: 'Terms of Use'      },
             ] as const).map(({ key, label }, i, arr) => (
               <React.Fragment key={String(key)}>
-                <button onClick={() => set
+                <button onClick={() => setActiveSubpage(key)} className="text-[#64748B] hover:text-[#1A1A1E] transition">
+                  {label}
+                </button>
+                {i < arr.length - 1 && <span className="text-[#E2E2E9] select-none">|</span>}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  );
+}
