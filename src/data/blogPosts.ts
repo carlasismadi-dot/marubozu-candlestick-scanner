@@ -74,162 +74,170 @@ export const BLOG_POSTS: BlogPost[] = [
     ]
   },
   {
-    id: 'btc-marubozu-real-trade-walkthrough',
-    slug: 'btc-marubozu-real-trade-walkthrough',
-    title: 'Real Trade Walkthrough: How Marubozu Scanner Caught a Bitcoin Breakout Live',
-    excerpt: 'A step-by-step breakdown of how our scanner detected a textbook Bullish Marubozu on BTC/USDT in real time — and exactly what a trader should have done next.',
-    category: 'Case Study',
+    id: 'marubozu-ema-rsi-volume-confidence',
+    slug: 'marubozu-ema-rsi-volume-confidence',
+    title: 'Trade with Conviction: Combining Marubozu with EMA, RSI, and Volume',
+    excerpt: 'The Marubozu scanner spots the signal — but confidence comes from confirmation. Learn how to layer EMA trend direction, RSI momentum, and volume conviction to open trades you can actually trust.',
+    category: 'Trading Strategy',
     date: '2026-05-31',
     author: 'Alex Mercer, CMT',
     readTime: '7 min read',
-    image: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=800&q=80',
-    metaDescription: 'Real-world Bitcoin Marubozu candlestick trade walkthrough with annotated chart, entry point, stop loss, and target levels explained for US crypto traders.',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
+    metaDescription: 'Learn how to combine the Marubozu candlestick scanner with EMA 20/50, RSI 14, and volume to build a high-confidence crypto trade setup with clear entry, stop loss, and target rules.',
     content: [
-      'One of the most common questions we get from US traders is: "Does this scanner actually catch real breakouts, or does it just flag random candles?" This article walks through an actual scenario — a textbook Bullish Marubozu that formed on the BTC/USDT 4H chart — and shows exactly what the scanner displayed, what the correct trade response was, and how the setup played out. No hindsight bias. Just the mechanics.',
-      'The setup began during a low-volatility consolidation phase where Bitcoin had been ranging between $61,200 and $63,800 for approximately 36 hours. Volume was compressed, and most 4H candles were spinning tops with long wicks in both directions — exactly the kind of noise the scanner filters out automatically. Then, on the breakout candle, the scanner flagged a BULLISH badge on BTC with a body percentage of 2.34% and a wick ratio of just 1.8% — well inside our default 5% tolerance threshold.',
-      'What made this candle a textbook Marubozu was the near-perfect open-to-close structure. Bitcoin opened the 4H candle at $63,810, and from that point buyers never let price retreat. There was no meaningful wick. The candle closed at $65,304 — a clean $1,494 move with almost zero rejection. The scanner highlighted it in green on the chart with the "B-MZ" label, and the Live Trade Alert panel fired the notification chime immediately upon candle close.',
-      'The correct trade entry was at the open of the next 4H candle: $65,310. Stop loss was placed at the 50% midpoint of the Marubozu body — ($63,810 + $65,304) / 2 = $64,557. That gives a stop distance of $753. For a trader risking 1% of a $10,000 account ($100), the correct position size was 0.133 BTC. The first target was the measured move — adding the full Marubozu body height ($1,494) to the breakout close — projecting to $66,798.',
-      'Bitcoin reached $66,820 within the next two 4H candles — approximately 8 hours after entry. The trade returned $199 on a $100 risk, a 1.99:1 reward-to-risk ratio. Not spectacular, but consistent. The real value of the Marubozu scanner is not finding once-in-a-year home runs — it is providing a mathematically repeatable filter that removes ambiguous candles and only surfaces high-conviction momentum structures, session after session, across 25 of the most liquid crypto assets simultaneously.'
+      'A Marubozu candle is one of the most decisive signals in price action — a full-bodied candle with no wicks that represents complete domination by one side of the market. But even the cleanest Marubozu can appear against the trend, at a key resistance zone, or on thin volume. The scanner surfaces the signal. Your job as a trader is to apply a three-layer confirmation filter before committing capital. When all four elements agree — Marubozu structure, EMA trend alignment, RSI momentum, and volume conviction — that is where genuine trading confidence lives.',
+      'The first confirmation layer is trend direction using the Exponential Moving Averages. Set EMA 20 and EMA 50 on your chart. For a bullish Marubozu setup, price must be trading above both EMAs, and EMA 20 should be above EMA 50 — a classic bullish stack. For short setups, the inverse applies. A Marubozu printing in the direction of the EMA trend is the market telling you momentum and structure are aligned. A Marubozu printing against the EMA stack is a counter-trend spike — statistically far less reliable and best ignored until you have much more experience reading order flow.',
+      'The second layer is the RSI 14, which measures momentum and, critically, whether the asset has room left to run. The ideal RSI window for a bullish Marubozu entry is between 40 and 65. Below 40, the asset may be in a downtrend regardless of the candle. Above 70, the move is likely already extended — buying a Marubozu at RSI 78 is chasing, not trading. The sweet spot, RSI 50–62, indicates building momentum without the exhaustion risk of an overbought reading. For bearish setups, look for RSI between 35 and 58 — declining but not yet oversold.',
+      'The third and most important confirmation is volume. A Marubozu with volume at or below the 20-period average is weak — it may simply be the result of a thin order book moment. A Marubozu where volume is 1.5 times or greater than the recent average is a completely different animal. High volume on a wick-free candle tells you institutional participants — funds, market makers, large retail desks — were actively behind the move. That is not noise. That is conviction you can trade alongside. On the Marubozu Scanner, pair the signal with your exchange chart volume bars and visually confirm the spike before every entry.',
+      'Execution is straightforward once all four signals are green. Wait for the Marubozu candle to fully close — never enter on an open candle, as it can still develop a wick in its final seconds. Enter at market on the open of the next candle, or use a limit order at the 50% midpoint of the Marubozu body if you want a more precise entry and are comfortable potentially missing the move. Place your stop loss just beyond the extreme of the Marubozu body — below the low for longs, above the high for shorts — with a 0.3% to 0.5% buffer to absorb spread. Your minimum target is 2× the stop distance from entry, giving a 1:2 risk-reward ratio. At Target 1, close 50% of your position. Move your stop to breakeven and let the remainder run to a 3R target or trail it with EMA 20 as a dynamic exit level.'
     ],
-    chartSvg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 340" width="100%" style="font-family:monospace;background:#0f172a;border-radius:12px;">
+    chartSvg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 380" width="100%" style="font-family:monospace;background:#0f172a;border-radius:12px;">
 
-  <!-- Background grid -->
   <defs>
-    <pattern id="grid" width="60" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 60 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="1"/>
+    <pattern id="grid2" width="52" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 52 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.8"/>
     </pattern>
   </defs>
-  <rect width="780" height="340" fill="#0f172a" rx="12"/>
-  <rect width="780" height="340" fill="url(#grid)" rx="12"/>
 
-  <!-- Price axis labels -->
-  <text x="698" y="52"  fill="#475569" font-size="10">$66,800</text>
-  <text x="698" y="92"  fill="#475569" font-size="10">$66,000</text>
-  <text x="698" y="132" fill="#475569" font-size="10">$65,200</text>
-  <text x="698" y="172" fill="#475569" font-size="10">$64,400</text>
-  <text x="698" y="212" fill="#475569" font-size="10">$63,600</text>
-  <text x="698" y="252" fill="#475569" font-size="10">$62,800</text>
-  <text x="698" y="292" fill="#475569" font-size="10">$62,000</text>
+  <!-- Background -->
+  <rect width="780" height="380" fill="#0f172a" rx="12"/>
+  <rect width="780" height="380" fill="url(#grid2)" rx="12"/>
 
   <!-- Price grid lines -->
-  <line x1="20" y1="50"  x2="690" y2="50"  stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="20" y1="90"  x2="690" y2="90"  stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="20" y1="130" x2="690" y2="130" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="20" y1="170" x2="690" y2="170" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="20" y1="210" x2="690" y2="210" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="20" y1="250" x2="690" y2="250" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
-  <line x1="20" y1="290" x2="690" y2="290" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="20" y1="50"  x2="695" y2="50"  stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="20" y1="90"  x2="695" y2="90"  stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="20" y1="130" x2="695" y2="130" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="20" y1="170" x2="695" y2="170" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="20" y1="210" x2="695" y2="210" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="20" y1="250" x2="695" y2="250" stroke="#1e293b" stroke-width="1" stroke-dasharray="4 4"/>
 
-  <!-- Consolidation zone shading -->
-  <rect x="20" y="130" width="670" height="80" fill="#1e3a5f" opacity="0.25" rx="2"/>
-  <text x="30" y="148" fill="#3b82f6" font-size="9" opacity="0.8">CONSOLIDATION ZONE  $61,200 – $63,800</text>
+  <!-- Price axis labels -->
+  <text x="700" y="54"  fill="#475569" font-size="9.5">$109</text>
+  <text x="700" y="94"  fill="#475569" font-size="9.5">$107</text>
+  <text x="700" y="134" fill="#475569" font-size="9.5">$105</text>
+  <text x="700" y="174" fill="#475569" font-size="9.5">$103</text>
+  <text x="700" y="214" fill="#475569" font-size="9.5">$101</text>
+  <text x="700" y="254" fill="#475569" font-size="9.5">$99</text>
 
-  <!-- ── CANDLES (14 candles, 4H each) ── -->
-  <!-- Candle 1 – bearish spinning top -->
-  <line x1="55"  y1="195" x2="55"  y2="255" stroke="#f87171" stroke-width="1.2"/>
-  <rect x="47"  y="210" width="16" height="25" fill="rgba(248,113,113,0.4)" stroke="#f87171" stroke-width="1" rx="1"/>
+  <!-- ── EMA 50 line (amber/orange) ── -->
+  <polyline points="30,240 80,236 130,232 180,228 230,224 280,221 330,218 380,215 430,212 480,210 530,200 580,185 630,172 680,160"
+    fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5 3" opacity="0.85"/>
+  <!-- EMA50 label -->
+  <rect x="630" y="155" width="44" height="13" fill="#1c1917" rx="3" opacity="0.85"/>
+  <text x="652" y="165" fill="#f59e0b" font-size="9" text-anchor="middle">EMA 50</text>
 
-  <!-- Candle 2 – bullish doji/small -->
-  <line x1="105" y1="200" x2="105" y2="252" stroke="#34d399" stroke-width="1.2"/>
-  <rect x="97"  y="220" width="16" height="18" fill="rgba(52,211,153,0.4)" stroke="#34d399" stroke-width="1" rx="1"/>
+  <!-- ── EMA 20 line (blue) ── -->
+  <polyline points="30,232 80,226 130,220 180,215 230,210 280,206 330,202 380,198 430,194 480,188 530,176 580,158 630,140 680,125"
+    fill="none" stroke="#60a5fa" stroke-width="1.8" opacity="0.9"/>
+  <!-- EMA20 label -->
+  <rect x="630" y="120" width="44" height="13" fill="#172554" rx="3" opacity="0.85"/>
+  <text x="652" y="130" fill="#60a5fa" font-size="9" text-anchor="middle">EMA 20</text>
 
-  <!-- Candle 3 – bearish spinning top -->
-  <line x1="155" y1="198" x2="155" y2="258" stroke="#f87171" stroke-width="1.2"/>
-  <rect x="147" y="215" width="16" height="28" fill="rgba(248,113,113,0.4)" stroke="#f87171" stroke-width="1" rx="1"/>
+  <!-- ── CANDLES (pre-signal: small wicked candles) ── -->
+  <!-- C1 bearish -->
+  <line x1="48"  y1="218" x2="48"  y2="258" stroke="#f87171" stroke-width="1.2"/>
+  <rect x="41"  y="228" width="14" height="22" fill="rgba(248,113,113,0.35)" stroke="#f87171" stroke-width="0.8" rx="1"/>
+  <!-- C2 bullish small -->
+  <line x1="96"  y1="214" x2="96"  y2="250" stroke="#34d399" stroke-width="1.2"/>
+  <rect x="89"  y="224" width="14" height="18" fill="rgba(52,211,153,0.35)" stroke="#34d399" stroke-width="0.8" rx="1"/>
+  <!-- C3 bearish -->
+  <line x1="144" y1="210" x2="144" y2="252" stroke="#f87171" stroke-width="1.2"/>
+  <rect x="137" y="222" width="14" height="24" fill="rgba(248,113,113,0.35)" stroke="#f87171" stroke-width="0.8" rx="1"/>
+  <!-- C4 doji -->
+  <line x1="192" y1="207" x2="192" y2="244" stroke="#94a3b8" stroke-width="1.2"/>
+  <rect x="185" y="218" width="14" height="10" fill="rgba(148,163,184,0.35)" stroke="#94a3b8" stroke-width="0.8" rx="1"/>
+  <!-- C5 bullish -->
+  <line x1="240" y1="205" x2="240" y2="240" stroke="#34d399" stroke-width="1.2"/>
+  <rect x="233" y="214" width="14" height="20" fill="rgba(52,211,153,0.35)" stroke="#34d399" stroke-width="0.8" rx="1"/>
+  <!-- C6 bearish -->
+  <line x1="288" y1="200" x2="288" y2="242" stroke="#f87171" stroke-width="1.2"/>
+  <rect x="281" y="212" width="14" height="22" fill="rgba(248,113,113,0.35)" stroke="#f87171" stroke-width="0.8" rx="1"/>
+  <!-- C7 small bullish -->
+  <line x1="336" y1="198" x2="336" y2="236" stroke="#34d399" stroke-width="1.2"/>
+  <rect x="329" y="208" width="14" height="18" fill="rgba(52,211,153,0.35)" stroke="#34d399" stroke-width="0.8" rx="1"/>
+  <!-- C8 bearish -->
+  <line x1="384" y1="193" x2="384" y2="232" stroke="#f87171" stroke-width="1.2"/>
+  <rect x="377" y="204" width="14" height="22" fill="rgba(248,113,113,0.35)" stroke="#f87171" stroke-width="0.8" rx="1"/>
+  <!-- C9 bullish -->
+  <line x1="432" y1="186" x2="432" y2="222" stroke="#34d399" stroke-width="1.2"/>
+  <rect x="425" y="196" width="14" height="20" fill="rgba(52,211,153,0.35)" stroke="#34d399" stroke-width="0.8" rx="1"/>
 
-  <!-- Candle 4 – tiny bullish -->
-  <line x1="205" y1="205" x2="205" y2="248" stroke="#34d399" stroke-width="1.2"/>
-  <rect x="197" y="218" width="16" height="16" fill="rgba(52,211,153,0.4)" stroke="#34d399" stroke-width="1" rx="1"/>
-
-  <!-- Candle 5 – bearish long wick -->
-  <line x1="255" y1="185" x2="255" y2="262" stroke="#f87171" stroke-width="1.2"/>
-  <rect x="247" y="210" width="16" height="32" fill="rgba(248,113,113,0.4)" stroke="#f87171" stroke-width="1" rx="1"/>
-
-  <!-- Candle 6 – small bullish -->
-  <line x1="305" y1="202" x2="305" y2="250" stroke="#34d399" stroke-width="1.2"/>
-  <rect x="297" y="215" width="16" height="22" fill="rgba(52,211,153,0.4)" stroke="#34d399" stroke-width="1" rx="1"/>
-
-  <!-- Candle 7 – bearish spinning top -->
-  <line x1="355" y1="196" x2="355" y2="256" stroke="#f87171" stroke-width="1.2"/>
-  <rect x="347" y="212" width="16" height="26" fill="rgba(248,113,113,0.4)" stroke="#f87171" stroke-width="1" rx="1"/>
-
-  <!-- Candle 8 – tiny doji -->
-  <line x1="405" y1="207" x2="405" y2="246" stroke="#34d399" stroke-width="1.2"/>
-  <rect x="397" y="220" width="16" height="12" fill="rgba(52,211,153,0.4)" stroke="#34d399" stroke-width="1" rx="1"/>
-
-  <!-- Candle 9 – bearish -->
-  <line x1="455" y1="200" x2="455" y2="255" stroke="#f87171" stroke-width="1.2"/>
-  <rect x="447" y="215" width="16" height="28" fill="rgba(248,113,113,0.4)" stroke="#f87171" stroke-width="1" rx="1"/>
-
-  <!-- ── MARUBOZU CANDLE (Candle 10) — the breakout ── -->
-  <!-- Glow backdrop -->
-  <rect x="493" y="60" width="34" height="148" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.7" rx="3"/>
-  <!-- Tiny wicks (1.8% wick ratio — realistic) -->
-  <line x1="510" y1="57"  x2="510" y2="68"  stroke="#059669" stroke-width="2"/>
-  <line x1="510" y1="198" x2="510" y2="208" stroke="#059669" stroke-width="2"/>
+  <!-- ── MARUBOZU CANDLE (C10 — signal) ── -->
+  <!-- Highlight glow box -->
+  <rect x="468" y="95" width="40" height="115" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.7" rx="3"/>
+  <!-- Tiny upper/lower wicks -->
+  <line x1="488" y1="92"  x2="488" y2="100" stroke="#059669" stroke-width="2"/>
+  <line x1="488" y1="205" x2="488" y2="212" stroke="#059669" stroke-width="2"/>
   <!-- Full body -->
-  <rect x="497" y="68" width="26" height="130" fill="rgba(16,185,129,0.95)" stroke="#10b981" stroke-width="2" rx="2"/>
-  <!-- B-MZ label -->
-  <text x="510" y="54" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">B-MZ</text>
-  <!-- OPEN / CLOSE price pins -->
-  <text x="528" y="203" fill="#a7f3d0" font-size="8.5" text-anchor="start">OPEN $63,810</text>
-  <text x="528" y="74"  fill="#a7f3d0" font-size="8.5" text-anchor="start">CLOSE $65,304</text>
-  <!-- Body % badge -->
-  <rect x="470" y="120" width="22" height="14" fill="#064e3b" rx="3"/>
-  <text x="481" y="130" fill="#6ee7b7" font-size="8" text-anchor="middle">2.34%</text>
+  <rect x="472" y="100" width="32" height="105" fill="rgba(16,185,129,0.9)" stroke="#10b981" stroke-width="2" rx="2"/>
+  <!-- B-MZ badge -->
+  <rect x="466" y="80" width="44" height="14" fill="#064e3b" rx="3"/>
+  <text x="488" y="91" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">B-MZ ▲</text>
+  <!-- Open / Close labels -->
+  <text x="508" y="212" fill="#6ee7b7" font-size="8.5" text-anchor="start">OPEN $102.40</text>
+  <text x="508" y="104" fill="#6ee7b7" font-size="8.5" text-anchor="start">CLOSE $107.80</text>
+  <!-- Wick % badge -->
+  <rect x="468" y="143" width="32" height="14" fill="#064e3b" rx="3"/>
+  <text x="484" y="153" fill="#6ee7b7" font-size="8" text-anchor="middle">1.6%</text>
 
-  <!-- ── POST-BREAKOUT candles ── -->
-  <!-- Candle 11 – bullish continuation (entry candle) -->
-  <line x1="560" y1="58" x2="560" y2="100" stroke="#34d399" stroke-width="1.5"/>
-  <rect x="551" y="68" width="18" height="80" fill="rgba(52,211,153,0.5)" stroke="#34d399" stroke-width="1.5" rx="1"/>
-
-  <!-- Candle 12 – bullish target reached -->
-  <line x1="608" y1="44"  x2="608" y2="72"  stroke="#34d399" stroke-width="1.5"/>
-  <rect x="599" y="52"  width="18" height="68" fill="rgba(52,211,153,0.6)" stroke="#34d399" stroke-width="1.5" rx="1"/>
-
-  <!-- Candle 13 – small pullback -->
-  <line x1="656" y1="48"  x2="656" y2="90"  stroke="#f87171" stroke-width="1.2"/>
-  <rect x="647" y="55"  width="18" height="28" fill="rgba(248,113,113,0.4)" stroke="#f87171" stroke-width="1" rx="1"/>
+  <!-- ── POST-SIGNAL candles ── -->
+  <!-- C11 entry candle bullish -->
+  <line x1="530" y1="90" x2="530" y2="120" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="522" y="98" width="16" height="82" fill="rgba(52,211,153,0.5)" stroke="#34d399" stroke-width="1.2" rx="1"/>
+  <!-- C12 bullish continuation -->
+  <line x1="572" y1="72" x2="572" y2="98" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="564" y="80" width="16" height="68" fill="rgba(52,211,153,0.55)" stroke="#34d399" stroke-width="1.2" rx="1"/>
+  <!-- C13 small pullback -->
+  <line x1="614" y1="74" x2="614" y2="110" stroke="#f87171" stroke-width="1.2"/>
+  <rect x="606" y="80" width="16" height="22" fill="rgba(248,113,113,0.35)" stroke="#f87171" stroke-width="0.8" rx="1"/>
+  <!-- C14 bullish -->
+  <line x1="656" y1="66" x2="656" y2="94" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="648" y="72" width="16" height="56" fill="rgba(52,211,153,0.55)" stroke="#34d399" stroke-width="1.2" rx="1"/>
 
   <!-- ── ANNOTATIONS ── -->
-
-  <!-- Entry arrow and label -->
-  <line x1="538" y1="70" x2="548" y2="70" stroke="#facc15" stroke-width="1.5" stroke-dasharray="3 2"/>
-  <polygon points="548,66 556,70 548,74" fill="#facc15"/>
-  <rect x="400" y="56" width="94" height="18" fill="#1c1917" rx="3" opacity="0.9"/>
-  <text x="447" y="68" fill="#facc15" font-size="9" text-anchor="middle" font-weight="bold">▶ ENTRY $65,310</text>
+  <!-- Entry line -->
+  <line x1="504" y1="100" x2="695" y2="100" stroke="#facc15" stroke-width="1" stroke-dasharray="5 3" opacity="0.85"/>
+  <text x="698" y="104" fill="#facc15" font-size="8.5">ENTRY $107.85</text>
 
   <!-- Stop loss line -->
-  <line x1="490" y1="170" x2="695" y2="170" stroke="#ef4444" stroke-width="1" stroke-dasharray="5 3" opacity="0.8"/>
-  <text x="698" y="174" fill="#ef4444" font-size="8.5">SL $64,557</text>
+  <line x1="468" y1="196" x2="695" y2="196" stroke="#ef4444" stroke-width="1" stroke-dasharray="5 3" opacity="0.8"/>
+  <text x="698" y="200" fill="#ef4444" font-size="8.5">SL $101.70</text>
 
-  <!-- Target line -->
-  <line x1="490" y1="50" x2="695" y2="50" stroke="#34d399" stroke-width="1" stroke-dasharray="5 3" opacity="0.8"/>
-  <text x="698" y="54" fill="#34d399" font-size="8.5">TP $66,798</text>
+  <!-- Target 1 line -->
+  <line x1="504" y1="62" x2="695" y2="62" stroke="#34d399" stroke-width="1" stroke-dasharray="4 3" opacity="0.75"/>
+  <text x="698" y="66" fill="#34d399" font-size="8.5">T1 2R $120.05</text>
 
-  <!-- Resistance line (top of consolidation) -->
-  <line x1="20" y1="130" x2="490" y2="130" stroke="#3b82f6" stroke-width="1.2" stroke-dasharray="6 3" opacity="0.6"/>
-  <text x="22" y="126" fill="#3b82f6" font-size="8.5">Resistance $63,800</text>
+  <!-- RSI zone label -->
+  <rect x="22" y="268" width="200" height="14" fill="#1e1b4b" rx="4" opacity="0.9"/>
+  <text x="30" y="279" fill="#a78bfa" font-size="9">RSI 14: 58  ✓ Sweet zone (40–65)</text>
 
-  <!-- Scanner alert badge -->
-  <rect x="22" y="12" width="180" height="24" fill="#064e3b" rx="6" opacity="0.95"/>
-  <text x="32" y="28" fill="#34d399" font-size="10" font-weight="bold">🟢 BULLISH MARUBOZU — BTC/USDT 4H</text>
+  <!-- Volume spike label -->
+  <rect x="230" y="268" width="180" height="14" fill="#064e3b" rx="4" opacity="0.9"/>
+  <text x="238" y="279" fill="#34d399" font-size="9">Volume: 2.1× avg  ✓ Confirmed</text>
 
-  <!-- Wick ratio badge -->
-  <rect x="210" y="12" width="130" height="24" fill="#172554" rx="6" opacity="0.95"/>
-  <text x="220" y="28" fill="#93c5fd" font-size="10">Wick Ratio: 1.8% ✓</text>
+  <!-- EMA alignment label -->
+  <rect x="418" y="268" width="180" height="14" fill="#172554" rx="4" opacity="0.9"/>
+  <text x="426" y="279" fill="#60a5fa" font-size="9">EMA Stack: Bullish  ✓ Aligned</text>
 
-  <!-- Time axis labels -->
-  <text x="46"  y="318" fill="#475569" font-size="9" text-anchor="middle">May 28 00:00</text>
-  <text x="205" y="318" fill="#475569" font-size="9" text-anchor="middle">May 28 16:00</text>
-  <text x="355" y="318" fill="#475569" font-size="9" text-anchor="middle">May 29 08:00</text>
-  <text x="505" y="318" fill="#475569" font-size="9" text-anchor="middle">May 30 00:00</text>
-  <text x="635" y="318" fill="#475569" font-size="9" text-anchor="middle">May 30 08:00</text>
+  <!-- Scanner alert badge top -->
+  <rect x="22" y="12" width="196" height="22" fill="#064e3b" rx="5" opacity="0.95"/>
+  <text x="32" y="27" fill="#34d399" font-size="9.5" font-weight="bold">🟢 BULLISH MARUBOZU — SOL/USDT 4H</text>
+  <rect x="226" y="12" width="130" height="22" fill="#172554" rx="5" opacity="0.95"/>
+  <text x="236" y="27" fill="#93c5fd" font-size="9.5">Wick Ratio: 1.6%  ✓</text>
+  <rect x="580" y="12" width="118" height="22" fill="#1e1b4b" rx="5" opacity="0.95"/>
+  <text x="590" y="27" fill="#a78bfa" font-size="9.5">R:R min 1:2  →  1:3</text>
 
-  <!-- R:R label -->
-  <rect x="580" y="12" width="118" height="24" fill="#1e1b4b" rx="6" opacity="0.95"/>
-  <text x="590" y="28" fill="#a78bfa" font-size="10">R:R 1.99:1  +$199</text>
+  <!-- Time axis -->
+  <text x="48"  y="308" fill="#475569" font-size="8.5" text-anchor="middle">Day 1  00:00</text>
+  <text x="192" y="308" fill="#475569" font-size="8.5" text-anchor="middle">Day 1  16:00</text>
+  <text x="336" y="308" fill="#475569" font-size="8.5" text-anchor="middle">Day 2  08:00</text>
+  <text x="488" y="308" fill="#475569" font-size="8.5" text-anchor="middle">Signal  candle</text>
+  <text x="630" y="308" fill="#475569" font-size="8.5" text-anchor="middle">Day 3  08:00</text>
+
+  <!-- Confirmation checklist -->
+  <text x="22" y="328" fill="#475569" font-size="8.5">ALL FILTERS CONFIRMED:  ✓ Marubozu (B-MZ)   ✓ EMA 20 > EMA 50   ✓ RSI 58   ✓ Volume 2.1× avg   →  OPEN TRADE</text>
 
 </svg>`
   },
 ];
+
