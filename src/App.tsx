@@ -55,6 +55,17 @@ const SYMBOL_MAP: Record<string, { id: string; name: string; symbol: string }> =
 
 const SYMBOLS = Object.keys(SYMBOL_MAP);
 
+/** Hardcoded approximate market-cap ranks (Binance doesn't provide this) */
+const COIN_RANK: Record<string, number> = {
+  'bitcoin':       1,  'ethereum':     2,  'binancecoin':  3,  'ripple':       4,
+  'solana':        5,  'dogecoin':     6,  'cardano':      7,  'tron':         8,
+  'chainlink':     9,  'avalanche-2': 10,  'shiba-inu':   11,  'sui':         12,
+  'polkadot':     13,  'litecoin':    14,  'near':        15,  'aptos':       16,
+  'uniswap':      17,  'stellar':     18,  'cosmos':      19,  'optimism':    20,
+  'arbitrum':     21,  'render-token':22,  'vechain':     23,  'fantom':      24,
+  'pepe':         25,
+};
+
 /** Convert timeframe key → Binance interval string */
 const INTERVAL_MAP: Record<'30m' | '4h' | '1d', string> = {
   '30m': '30m',
@@ -91,8 +102,9 @@ async function fetchBinanceTickers(): Promise<CoinData[]> {
       name:                  meta.name,
       current_price:         parseFloat(t.lastPrice),
       price_change_percentage_24h: parseFloat(t.priceChangePercent),
-      market_cap:            parseFloat(t.quoteVolume), // use quoteVolume as proxy
-      total_volume:          parseFloat(t.volume),
+      market_cap:            0, // not available from Binance public API
+      market_cap_rank:       COIN_RANK[meta.id] ?? 99,
+      total_volume:          parseFloat(t.quoteVolume), // 24h quote volume in USDT
       image:                 `https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/32/color/${meta.symbol.toLowerCase()}.png`,
       // extra Binance fields stored for convenience
       _binanceSymbol:        t.symbol,
@@ -481,4 +493,106 @@ export default function App() {
                 className={`text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors shrink-0 ${
                   activeSubpage === key
                     ? 'bg-[#1A1A1E] text-white'
-            
+                    : 'text-[#64748B] hover:text-[#1A1A1E] hover:bg-slate-50'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </nav>
+
+        </div>
+      </header>
+
+      {/* Main */}
+      <main className="flex-grow p-4 md:p-6">
+        {activeSubpage !== null ? (
+          <AdsenseDocPages currentSubpage={activeSubpage} setCurrentSubpage={setActiveSubpage} />
+        ) : (
+          <div className="max-w-7xl mx-auto space-y-6">
+
+            <StatsPanel
+              coins={coins}
+              ohlcRecords={ohlcRecords}
+              settings={settings}
+              selectedTimeframe={selectedTimeframe}
+            />
+
+            <section className="w-full">
+              <CandlestickChart
+                coin={selectedCoinData}
+                candles={activeCandles}
+                settings={settings}
+                daysParam={INTERVAL_MAP[selectedTimeframe]}
+              />
+            </section>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+              <section className="lg:col-span-12 xl:col-span-7 flex flex-col">
+                <div className="flex-1 flex flex-col h-full">
+                  <ScannerTable
+                    coins={coins}
+                    ohlcRecords={ohlcRecords}
+                    settings={settings}
+                    selectedCoinId={selectedCoinId}
+                    setSelectedCoinId={setSelectedCoinId}
+                    selectedTimeframe={selectedTimeframe}
+                    setSelectedTimeframe={setSelectedTimeframe}
+                    onRefreshAll={handleFullRefresh}
+                    isRefreshing={isRefreshing}
+                  />
+                </div>
+              </section>
+
+              <section className="lg:col-span-12 xl:col-span-5 flex flex-col gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-1 gap-6">
+                  <NotificationCenter
+                    coins={coins}
+                    ohlcRecords={ohlcRecords}
+                    settings={settings}
+                    onSelectCoin={handleSelectFromAlert}
+                  />
+                  <EducationPanel
+                    settings={settings}
+                    setSettings={setSettings}
+                  />
+                </div>
+              </section>
+            </div>
+
+          </div>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="border-t border-[#E2E2E9] bg-white p-6 md:py-8 text-xs text-[#64748B] font-sans">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="flex flex-col gap-1.5 text-center md:text-left">
+            <div className="flex items-center gap-1.5 justify-center md:justify-start font-bold text-[#1A1A1E]">
+              <Shield className="w-4 h-4 text-blue-500" />
+              <span>Binance API &bull; No API Key Required &bull; Real-Time WebSocket</span>
+            </div>
+            <span>No investment advice. Candlestick patterns represent historical statistical drives only. &copy; 2026 Crypto Marubozu Scanner.</span>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-semibold">
+            {([
+              { key: null,      label: 'Scanner Dashboard' },
+              { key: 'blog',    label: 'Blog (Academy)'    },
+              { key: 'about',   label: 'About Us'          },
+              { key: 'privacy', label: 'Privacy Policy'    },
+              { key: 'terms',   label: 'Terms of Use'      },
+            ] as const).map(({ key, label }, i, arr) => (
+              <React.Fragment key={String(key)}>
+                <button onClick={() => setActiveSubpage(key)} className="text-[#64748B] hover:text-[#1A1A1E] transition">
+                  {label}
+                </button>
+                {i < arr.length - 1 && <span className="text-[#E2E2E9] select-none">|</span>}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  );
+}
