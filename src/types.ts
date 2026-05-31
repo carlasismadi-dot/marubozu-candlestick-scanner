@@ -12,33 +12,36 @@ export interface CoinData {
   image: string;
   current_price: number;
   market_cap: number;
-  market_cap_rank: number;
-  fully_diluted_valuation: number | null;
+  market_cap_rank: number; // populated as index order from Binance (1-based)
   total_volume: number;
-  high_24h: number;
-  low_24h: number;
-  price_change_24h: number;
   price_change_percentage_24h: number;
-  market_cap_change_24h: number;
-  market_cap_change_percentage_24h: number;
-  circulating_supply: number;
-  total_supply: number | null;
-  max_supply: number | null;
-  ath: number;
-  ath_change_percentage: number;
-  ath_date: string;
-  atl: number;
-  atl_change_percentage: number;
-  atl_date: string;
-  last_updated: string;
+  // Optional fields from CoinGecko that Binance doesn't supply
+  fully_diluted_valuation?: number | null;
+  high_24h?: number;
+  low_24h?: number;
+  price_change_24h?: number;
+  market_cap_change_24h?: number;
+  market_cap_change_percentage_24h?: number;
+  circulating_supply?: number;
+  total_supply?: number | null;
+  max_supply?: number | null;
+  ath?: number;
+  ath_change_percentage?: number;
+  ath_date?: string;
+  atl?: number;
+  atl_change_percentage?: number;
+  atl_date?: string;
+  last_updated?: string;
+  // Binance-specific
+  _binanceSymbol?: string;
 }
 
 export type MarubozuType = 'bullish' | 'bearish' | 'none';
 
 export interface MarubozuStatus {
   type: MarubozuType;
-  wickRatio: number; // sum of wicks divided by total range (0 to 1)
-  bodyPercent: number; // body height divided by open price
+  wickRatio: number;
+  bodyPercent: number;
   candle: Candle | null;
 }
 
@@ -58,6 +61,6 @@ export interface CoinScanResult {
 }
 
 export interface ScannerSettings {
-  wickTolerance: number; // e.g., 0.05 means wicks can be at most 5% of the total candle range
-  minBodyPercent: number; // e.g., 0.15 means the body must be at least 0.15% of the opening price (prevents flat candle noise)
+  wickTolerance: number;
+  minBodyPercent: number;
 }
