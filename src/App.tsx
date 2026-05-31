@@ -359,6 +359,16 @@ export default function App() {
               selectedTimeframe={selectedTimeframe}
             />
 
+            {/* Full-width chart row — sits above everything so candles have maximum space */}
+            <section className="w-full">
+              <CandlestickChart
+                coin={selectedCoinData}
+                candles={activeCandles}
+                settings={settings}
+                daysParam={daysMap[selectedTimeframe]}
+              />
+            </section>
+
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
               
               {/* Left grid: Scanner table with filters (7/12 cols) */}
@@ -376,16 +386,8 @@ export default function App() {
                 />
               </section>
 
-              {/* Right grid: Interactive SVG Candlestick widget, Alerts panel & Education sliders (5/12 cols) */}
+              {/* Right grid: Alerts panel & Education sliders (5/12 cols) */}
               <section className="lg:col-span-12 xl:col-span-5 flex flex-col gap-6">
-                
-                {/* Candlestick chart container */}
-                <CandlestickChart
-                  coin={selectedCoinData}
-                  candles={activeCandles}
-                  settings={settings}
-                  daysParam={daysMap[selectedTimeframe]}
-                />
 
                 {/* Stacked sub-items */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-1 gap-6">
