@@ -1,6 +1,0 @@
-{
-  "name": "Crypto Marubozu Scanner",
-  "description": "Real-time cryptocurrency scanner for bullish and bearish Marubozu candlestick patterns with customizable timeframes and wick tolerance filters.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
