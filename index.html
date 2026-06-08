@@ -225,24 +225,18 @@
     </div>
 
     <script>
-        // ==========================================
-        // AUTO-FILLED INTEGRATION INFRASTRUCTURE KEYS
-        // ==========================================
         const SUPABASE_URL = "https://ozcpjhqlmfhhzopxlzpy.supabase.co"; 
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96Y3BqaHFsbWZoaHpvcHhsenB5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MzI2NjksImV4cCI6MjA5NjUwODY2OX0.mdg8w3KYdzxCocC3h6AYn1fkGE7hhe4igbCj2wmRArw"; 
 
-        // Initialize connection client
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         let activeSignalsMemory = [];
         let runningCategoryFilter = 'ALL';
 
-        // Categorize assets based on currency pairs vs crypto text patterns
         function evaluateAssetType(sym) {
             const cryptoTokens = ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'LINK'];
             return cryptoTokens.some(token => sym.toUpperCase().includes(token)) ? 'CRYPTO' : 'FOREX';
         }
 
-        // Generate individual HTML layout for inbound signal cards
         function renderSignalCard(node) {
             const assetType = evaluateAssetType(node.symbol);
             const isBuy = node.direction.toUpperCase().includes("BUY") || node.direction.toUpperCase().includes("BULLISH");
@@ -275,7 +269,6 @@
             `;
         }
 
-        // Render contents of memory cache into display grid layout
         function updateDashboardUI() {
             const gridContainer = document.getElementById("signalsDisplayGrid");
             let elementsHTML = activeSignalsMemory
@@ -286,7 +279,6 @@
             searchFilter();
         }
 
-        // Filter cards between Crypto and Forex tabs
         function filterCategory(targetType, buttonInstance) {
             runningCategoryFilter = targetType;
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
@@ -294,7 +286,7 @@
             updateDashboardUI();
         }
 
-        // Live text input ticker search mechanics
+        // Live search bar filter execution logic
         function searchFilter() {
             const query = document.getElementById("assetSearch").value.toUpperCase();
             const cards = document.querySelectorAll(".signal-card");
@@ -304,7 +296,6 @@
             });
         }
 
-        // Fetch historic entries from database table on site load
         async function fetchHistoricalSignals() {
             const { data, error } = await _supabase
                 .from('alerts')
@@ -321,7 +312,6 @@
             }
         }
 
-        // Open live WebSocket real-time subscription channel
         _supabase
             .channel('db-live-feed')
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'alerts' }, payload => {
@@ -331,7 +321,6 @@
             })
             .subscribe();
 
-        // Run data initialization
         fetchHistoricalSignals();
     </script>
 </body>
