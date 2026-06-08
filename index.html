@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>marubozuscan.xyz - Marubozu Scanner</title>
-    <!-- Import official Supabase Real-Time Engine Client Module safely -->
+    <title>marubozuscan.xyz - Institutional Breakout Feed</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
@@ -18,7 +17,6 @@
             --color-sell: #ff3b30;
             --color-accent: #2962ff;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif;
             background-color: var(--bg-main);
@@ -26,8 +24,6 @@
             margin: 0;
             padding: 0;
         }
-
-        /* Top Header Brand Navigation */
         header {
             background-color: var(--bg-surface);
             border-bottom: 1px solid var(--border);
@@ -36,7 +32,6 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .logo-area h1 {
             margin: 0;
             font-size: 24px;
@@ -46,7 +41,6 @@
         }
         .logo-area h1 span { color: var(--color-accent); }
         .logo-area p { margin: 3px 0 0 0; font-size: 12px; color: var(--text-muted); }
-
         .system-status {
             display: flex;
             align-items: center;
@@ -59,15 +53,11 @@
             border: 1px solid rgba(41, 98, 255, 0.2);
         }
         .status-dot { width: 8px; height: 8px; background-color: var(--color-buy); border-radius: 50%; box-shadow: 0 0 8px var(--color-buy); }
-
-        /* Interface Container layout */
         .dashboard-container {
             max-width: 1300px;
             margin: 30px auto;
             padding: 0 20px;
         }
-
-        /* Educational Concept Banner */
         .blueprint-box {
             background: linear-gradient(135deg, #131722 0%, #1c2030 100%);
             border: 1px solid var(--border);
@@ -81,8 +71,6 @@
         .blueprint-step { background: rgba(11, 12, 14, 0.4); padding: 15px; border-radius: 6px; border-left: 3px solid var(--color-accent); }
         .blueprint-step h3 { margin: 0 0 8px 0; font-size: 14px; color: #ffffff; }
         .blueprint-step p { margin: 0; font-size: 12px; color: var(--text-main); line-height: 1.4; }
-
-        /* Toolbar filtering wrappers */
         .controls-bar {
             background-color: var(--bg-surface);
             border: 1px solid var(--border);
@@ -95,7 +83,6 @@
             gap: 15px;
             margin-bottom: 25px;
         }
-
         .filter-buttons { display: flex; gap: 10px; }
         .filter-btn {
             background-color: var(--bg-card);
@@ -113,7 +100,6 @@
             border-color: var(--color-accent);
             color: white;
         }
-
         .search-box input {
             background-color: var(--bg-card);
             border: 1px solid var(--border);
@@ -124,15 +110,11 @@
             font-size: 13px;
         }
         .search-box input:focus { border-color: var(--color-accent); outline: none; }
-
-        /* Dynamic Signals Grid Elements */
         .signals-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
             gap: 20px;
         }
-
-        /* Signal Processing Cards layout */
         .signal-card {
             background-color: var(--bg-surface);
             border: 1px solid var(--border);
@@ -144,11 +126,9 @@
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
         .signal-card:hover { transform: translateY(-2px); border-color: #434651; }
-        
         .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
         .asset-title { margin: 0; font-size: 20px; font-weight: 700; color: #ffffff; letter-spacing: -0.2px; }
         .asset-type-badge { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-
         .tf-badge {
             background-color: var(--bg-card);
             padding: 4px 8px;
@@ -158,7 +138,6 @@
             color: var(--text-main);
             border: 1px solid var(--border);
         }
-
         .direction-banner {
             display: inline-flex;
             align-items: center;
@@ -171,10 +150,8 @@
         }
         .signal-card.buy-card { border-top: 4px solid var(--color-buy); }
         .signal-card.buy-card .direction-banner { background-color: rgba(0, 196, 140, 0.15); color: var(--color-buy); }
-        
         .signal-card.sell-card { border-top: 4px solid var(--color-sell); }
         .signal-card.sell-card .direction-banner { background-color: rgba(255, 59, 48, 0.15); color: var(--color-sell); }
-
         .metrics-block {
             background-color: rgba(28, 32, 48, 0.5);
             border-radius: 6px;
@@ -186,7 +163,6 @@
         .metric-row { display: flex; justify-content: space-between; }
         .metric-label { color: var(--text-muted); font-weight: bold; }
         .metric-value { color: #ffffff; font-weight: bold; }
-
         .card-footer {
             margin-top: 15px;
             border-top: 1px solid var(--border);
@@ -196,7 +172,6 @@
             display: flex;
             justify-content: space-between;
         }
-
         .no-data { grid-column: 1 / -1; text-align: center; padding: 50px; color: var(--text-muted); font-size: 15px; }
     </style>
 </head>
@@ -214,7 +189,6 @@
     </header>
 
     <div class="dashboard-container">
-        <!-- Educational Blueprint Section explaining strategy execution to visitors -->
         <div class="blueprint-box">
             <h2>The marubozuscan.xyz Execution Strategy</h2>
             <p>A Marubozu candle represents pure institutional aggression. We filter out the market traps by tracking setups ONLY when a high-volume Marubozu completely shatters a significant Double Top or Double Bottom macro level on key timeframes (H1, H4, D1).</p>
@@ -234,7 +208,6 @@
             </div>
         </div>
 
-        <!-- System Controls bar -->
         <div class="controls-bar">
             <div class="filter-buttons">
                 <button class="filter-btn active" onclick="filterCategory('ALL', this)">All Feeds</button>
@@ -246,7 +219,6 @@
             </div>
         </div>
 
-        <!-- Master Signal Cards Output Engine -->
         <div id="signalsDisplayGrid" class="signals-grid">
             <div class="no-data">Initializing terminal connection matrices...</div>
         </div>
@@ -254,23 +226,26 @@
 
     <script>
         // ==========================================
-        // PASTE YOUR EXTRACTED SUPABASE DETAILS HERE
+        // AUTO-FILLED INTEGRATION INFRASTRUCTURE KEYS
         // ==========================================
         const SUPABASE_URL = "https://ozcpjhqlmfhhzopxlzpy.supabase.co"; 
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im96Y3BqaHFsbWZoaHpvcHhsenB5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MzI2NjksImV4cCI6MjA5NjUwODY2OX0.mdg8w3KYdzxCocC3h6AYn1fkGE7hhe4igbCj2wmRArw"; 
 
+        // Initialize connection client
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         let activeSignalsMemory = [];
         let runningCategoryFilter = 'ALL';
 
+        // Categorize assets based on currency pairs vs crypto text patterns
         function evaluateAssetType(sym) {
             const cryptoTokens = ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'LINK'];
             return cryptoTokens.some(token => sym.toUpperCase().includes(token)) ? 'CRYPTO' : 'FOREX';
         }
 
+        // Generate individual HTML layout for inbound signal cards
         function renderSignalCard(node) {
             const assetType = evaluateAssetType(node.symbol);
-            const isBuy = node.direction.includes("BUY");
+            const isBuy = node.direction.toUpperCase().includes("BUY") || node.direction.toUpperCase().includes("BULLISH");
             const localizedTime = new Date(node.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
             const localizedDate = new Date(node.created_at).toLocaleDateString([], {month: 'short', day: 'numeric'});
 
@@ -284,7 +259,7 @@
                         <span class="tf-badge">${node.timeframe}</span>
                     </div>
                     
-                    <div class="direction-banner">${node.direction} TRIGGER</div>
+                    <div class="direction-banner">${node.direction}</div>
 
                     <div class="metrics-block">
                         <div class="metric-row"><span class="metric-label">ENTRY :</span><span class="metric-value">${node.entry}</span></div>
@@ -300,18 +275,18 @@
             `;
         }
 
+        // Render contents of memory cache into display grid layout
         function updateDashboardUI() {
             const gridContainer = document.getElementById("signalsDisplayGrid");
-            
             let elementsHTML = activeSignalsMemory
                 .filter(item => runningCategoryFilter === 'ALL' || evaluateAssetType(item.symbol) === runningCategoryFilter)
                 .map(renderSignalCard)
                 .join('');
-
             gridContainer.innerHTML = elementsHTML || `<div class="no-data">No active signals found matching category "${runningCategoryFilter}".</div>`;
             searchFilter();
         }
 
+        // Filter cards between Crypto and Forex tabs
         function filterCategory(targetType, buttonInstance) {
             runningCategoryFilter = targetType;
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
@@ -319,16 +294,17 @@
             updateDashboardUI();
         }
 
+        // Live text input ticker search mechanics
         function searchFilter() {
             const query = document.getElementById("assetSearch").value.toUpperCase();
             const cards = document.querySelectorAll(".signal-card");
-
             cards.forEach(card => {
                 const sym = card.getAttribute("data-symbol-name");
                 card.style.display = sym.includes(query) ? "block" : "none";
             });
         }
 
+        // Fetch historic entries from database table on site load
         async function fetchHistoricalSignals() {
             const { data, error } = await _supabase
                 .from('alerts')
@@ -340,11 +316,12 @@
                 activeSignalsMemory = data;
                 updateDashboardUI();
             } else {
+                console.error("Database connection fault:", error);
                 document.getElementById("signalsDisplayGrid").innerHTML = `<div class="no-data" style="color:var(--color-sell);">Initialization Failure: Check Database Credentials.</div>`;
             }
         }
 
-        // Live WebSocket Real-time Insertion Listener
+        // Open live WebSocket real-time subscription channel
         _supabase
             .channel('db-live-feed')
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'alerts' }, payload => {
@@ -354,6 +331,7 @@
             })
             .subscribe();
 
+        // Run data initialization
         fetchHistoricalSignals();
     </script>
 </body>
