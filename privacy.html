@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy | MarubozuScan</title>
+<meta name="description" content="MarubozuScan Privacy Policy — how we collect, use, and protect your data when you visit marubozuscan.xyz. Includes cookie policy, Google Analytics disclosure, and US visitor rights under CCPA." />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+<link rel="canonical" href="https://marubozuscan.xyz/privacy.html" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="MarubozuScan" />
+<meta property="og:title" content="Privacy Policy | MarubozuScan" />
+<meta property="og:description" content="MarubozuScan Privacy Policy — how we collect, use, and protect your data. Includes cookie policy, Google Analytics disclosure, and US visitor rights under CCPA." />
+<meta property="og:url" content="https://marubozuscan.xyz/privacy.html" />
+<meta property="og:image" content="https://marubozuscan.xyz/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@marubozuscan" />
+<meta name="twitter:title" content="Privacy Policy | MarubozuScan" />
+<meta name="twitter:description" content="MarubozuScan Privacy Policy — how we collect, use, and protect your data. Includes cookie policy and US visitor rights under CCPA." />
+<meta name="twitter:image" content="https://marubozuscan.xyz/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VG8Z654LLK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-VG8Z654LLK');
+  </script>
+<style>
+  :root{
+    --bg-primary:#0a0e14;
+    --bg-secondary:#111722;
+    --bg-card:#151c2c;
+    --bg-elevated:#1a2236;
+    --border-color:#232b3e;
+    --border-light:#2c3650;
+    --text-primary:#e8edf7;
+    --text-secondary:#9aa7c2;
+    --text-muted:#5d6b8a;
+    --accent-green:#26d97f;
+    --accent-red:#ff5c5c;
+    --accent-blue:#4f8cff;
+    --accent-amber:#ffb648;
+    --font-sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+    --radius:10px;
+    --max-width:1080px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{font-size:16px;-webkit-text-size-adjust:100%;}
+
+  body{
+    background-color:var(--bg-primary);
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(79,140,255,0.06), transparent 40%),
+      radial-gradient(circle at 85% 100%, rgba(38,217,127,0.05), transparent 40%);
+    color:var(--text-primary);
+    font-family:var(--font-sans);
+    line-height:1.6;
+    font-size:clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
+    min-height:100vh;
+  }
+
+  a{color:var(--accent-blue);text-decoration:none;transition:color .15s ease;}
+  a:hover{color:#7baeff;text-decoration:underline;}
+
+  /* ============ HEADER / NAV ============ */
+  header{
+    border-bottom:1px solid var(--border-color);
+    background:rgba(17,23,34,0.85);
+    backdrop-filter:blur(10px);
+    position:sticky;
+    top:0;
+    z-index:50;
+  }
+
+  .nav-wrap{
+    max-width:var(--max-width);
+    margin:0 auto;
+    padding:0.9rem 1.25rem;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+    flex-wrap:wrap;
+  }
+
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:1.1rem;
+    letter-spacing:0.02em;
+    color:var(--text-primary);
+  }
+
+  .logo-mark{
+    width:32px;height:32px;
+    border-radius:7px;
+    background:linear-gradient(135deg, var(--accent-green), #0fb968);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);
+    font-weight:800;
+    color:#06150d;
+    font-size:0.95rem;
+    flex-shrink:0;
+  }
+
+  .logo span{color:var(--accent-green);}
+
+  nav.links{
+    display:flex;
+    gap:1.4rem;
+    font-size:0.92rem;
+    font-weight:500;
+    flex-wrap:wrap;
+  }
+
+  nav.links a{color:var(--text-secondary);}
+  nav.links a:hover{color:var(--text-primary);text-decoration:none;}
+  nav.links a.active{color:var(--accent-green);}
+
+  /* ============ MAIN LAYOUT ============ */
+  main{
+    max-width:var(--max-width);
+    margin:0 auto;
+    padding:2.5rem 1.25rem 4rem;
+  }
+
+  .page-head{
+    margin-bottom:2.5rem;
+    padding-bottom:1.75rem;
+    border-bottom:1px solid var(--border-color);
+  }
+
+  .page-head .tag{
+    display:inline-flex;
+    align-items:center;
+    gap:0.45rem;
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    font-weight:600;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--accent-blue);
+    background:rgba(79,140,255,0.08);
+    border:1px solid rgba(79,140,255,0.25);
+    padding:0.3rem 0.7rem;
+    border-radius:99px;
+    margin-bottom:1rem;
+  }
+
+  .page-head .tag::before{
+    content:'';
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--accent-blue);
+    display:inline-block;
+  }
+
+  .page-head h1{
+    font-size:clamp(1.8rem, 1.4rem + 2.2vw, 2.6rem);
+    font-weight:800;
+    letter-spacing:-0.01em;
+    margin-bottom:0.6rem;
+  }
+
+  .page-head .meta{
+    color:var(--text-muted);
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+  }
+
+  .page-head .lede{
+    color:var(--text-secondary);
+    margin-top:1rem;
+    font-size:1.02rem;
+    max-width:760px;
+  }
+
+  /* ============ TOC ============ */
+  .toc{
+    background:var(--bg-card);
+    border:1px solid var(--border-color);
+    border-radius:var(--radius);
+    padding:1.25rem 1.5rem;
+    margin-bottom:2.5rem;
+  }
+
+  .toc h2{
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    margin-bottom:0.85rem;
+    font-weight:600;
+  }
+
+  .toc ol{
+    list-style:none;
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:0.5rem 1.5rem;
+  }
+
+  .toc li{
+    font-size:0.9rem;
+  }
+
+  .toc a{
+    color:var(--text-secondary);
+    display:flex;
+    align-items:baseline;
+    gap:0.5rem;
+  }
+
+  .toc a:hover{color:var(--accent-green);text-decoration:none;}
+
+  .toc .num{
+    font-family:var(--font-mono);
+    color:var(--accent-green);
+    font-size:0.82rem;
+    flex-shrink:0;
+    width:1.4rem;
+  }
+
+  /* ============ CONTENT SECTIONS ============ */
+  .policy-section{
+    background:var(--bg-card);
+    border:1px solid var(--border-color);
+    border-radius:var(--radius);
+    padding:1.75rem 1.75rem 1.9rem;
+    margin-bottom:1.5rem;
+    scroll-margin-top:90px;
+  }
+
+  .policy-section h2{
+    font-size:clamp(1.15rem, 1rem + 0.6vw, 1.45rem);
+    font-weight:700;
+    margin-bottom:1rem;
+    display:flex;
+    align-items:center;
+    gap:0.65rem;
+    color:var(--text-primary);
+  }
+
+  .policy-section h2 .idx{
+    font-family:var(--font-mono);
+    color:var(--accent-green);
+    font-size:0.85rem;
+    background:rgba(38,217,127,0.08);
+    border:1px solid rgba(38,217,127,0.25);
+    border-radius:6px;
+    padding:0.2rem 0.5rem;
+    flex-shrink:0;
+  }
+
+  .policy-section h3{
+    font-size:1.02rem;
+    font-weight:600;
+    margin:1.4rem 0 0.6rem;
+    color:var(--text-primary);
+  }
+
+  .policy-section p{
+    color:var(--text-secondary);
+    margin-bottom:0.9rem;
+  }
+
+  .policy-section p:last-child{margin-bottom:0;}
+
+  .policy-section ul, .policy-section ol.lettered{
+    color:var(--text-secondary);
+    margin:0.6rem 0 1rem 0;
+    padding-left:1.4rem;
+    display:flex;
+    flex-direction:column;
+    gap:0.45rem;
+  }
+
+  .policy-section ul{list-style:none;}
+
+  .policy-section ul li{
+    position:relative;
+    padding-left:1.3rem;
+  }
+
+  .policy-section ul li::before{
+    content:'▸';
+    position:absolute;
+    left:0;
+    color:var(--accent-green);
+    font-size:0.85rem;
+    top:0.1rem;
+  }
+
+  .policy-section strong{color:var(--text-primary);font-weight:600;}
+
+  .policy-section code{
+    font-family:var(--font-mono);
+    background:var(--bg-elevated);
+    border:1px solid var(--border-light);
+    padding:0.1rem 0.4rem;
+    border-radius:5px;
+    font-size:0.85em;
+    color:var(--accent-amber);
+  }
+
+  /* Callout boxes */
+  .callout{
+    border-radius:8px;
+    padding:1rem 1.15rem;
+    margin:1.1rem 0;
+    border:1px solid;
+    font-size:0.92rem;
+    display:flex;
+    gap:0.75rem;
+    align-items:flex-start;
+  }
+
+  .callout .icon{
+    font-family:var(--font-mono);
+    font-weight:700;
+    flex-shrink:0;
+    width:24px;height:24px;
+    border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.8rem;
+    margin-top:0.05rem;
+  }
+
+  .callout.warn{
+    background:rgba(255,182,72,0.06);
+    border-color:rgba(255,182,72,0.3);
+  }
+  .callout.warn .icon{
+    background:rgba(255,182,72,0.15);
+    color:var(--accent-amber);
+  }
+  .callout.warn p{color:var(--text-secondary);margin-bottom:0;}
+
+  .callout.info{
+    background:rgba(79,140,255,0.06);
+    border-color:rgba(79,140,255,0.3);
+  }
+  .callout.info .icon{
+    background:rgba(79,140,255,0.15);
+    color:var(--accent-blue);
+  }
+  .callout.info p{color:var(--text-secondary);margin-bottom:0;}
+
+  .callout.danger{
+    background:rgba(255,92,92,0.06);
+    border-color:rgba(255,92,92,0.3);
+  }
+  .callout.danger .icon{
+    background:rgba(255,92,92,0.15);
+    color:var(--accent-red);
+  }
+  .callout.danger p{color:var(--text-secondary);margin-bottom:0;}
+
+  /* Data table */
+  .data-table{
+    width:100%;
+    border-collapse:collapse;
+    margin:1rem 0;
+    font-size:0.88rem;
+    overflow:hidden;
+    border-radius:8px;
+    border:1px solid var(--border-color);
+  }
+  .data-table th, .data-table td{
+    padding:0.65rem 0.85rem;
+    text-align:left;
+    border-bottom:1px solid var(--border-color);
+  }
+  .data-table th{
+    background:var(--bg-elevated);
+    font-family:var(--font-mono);
+    font-size:0.74rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--text-muted);
+    font-weight:600;
+  }
+  .data-table td{color:var(--text-secondary);}
+  .data-table tr:last-child td{border-bottom:none;}
+  .data-table tr:nth-child(even) td{background:rgba(255,255,255,0.015);}
+
+  .table-wrap{overflow-x:auto;border-radius:8px;}
+
+  /* ============ FOOTER ============ */
+  footer{
+    border-top:1px solid var(--border-color);
+    padding:2.5rem 1.25rem;
+    background:var(--bg-secondary);
+  }
+
+  .footer-wrap{
+    max-width:var(--max-width);
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:1.25rem;
+  }
+
+  .footer-links{
+    display:flex;
+    gap:1.5rem;
+    flex-wrap:wrap;
+    font-size:0.88rem;
+  }
+
+  .footer-links a{color:var(--text-secondary);}
+  .footer-links a:hover{color:var(--accent-green);text-decoration:none;}
+
+  .footer-disclaimer{
+    color:var(--text-muted);
+    font-size:0.8rem;
+    line-height:1.7;
+    border-top:1px solid var(--border-color);
+    padding-top:1.25rem;
+  }
+
+  .footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:0.75rem;
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    color:var(--text-muted);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 720px){
+    .nav-wrap{flex-direction:column;align-items:flex-start;gap:0.75rem;}
+    nav.links{gap:1rem;width:100%;}
+    .toc ol{grid-template-columns:1fr;}
+    .policy-section{padding:1.4rem 1.15rem;}
+    main{padding:1.75rem 1rem 3rem;}
+    .footer-bottom{flex-direction:column;align-items:flex-start;}
+  }
+
+  @media (max-width: 420px){
+    .policy-section h2{font-size:1.1rem;}
+    .policy-section h2 .idx{font-size:0.72rem;padding:0.15rem 0.4rem;}
+    .callout{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">MZ</span>
+      Marubozu<span>Scan</span>
+    </a>
+    <nav class="links">
+      <a href="index.html">Dashboard</a>
+      <a href="about.html">About</a>
+      <a href="disclaimer.html">Disclaimer</a>
+      <a href="privacy.html" class="active">Privacy Policy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="page-head">
+    <span class="tag">Legal &amp; Compliance</span>
+    <h1>Privacy Policy</h1>
+    <div class="meta">Effective Date: June 12, 2026 &nbsp;|&nbsp; Last Updated: June 12, 2026 &nbsp;|&nbsp; Applies to: marubozuscan.xyz</div>
+    <p class="lede">
+      This Privacy Policy describes how MarubozuScan ("we," "us," "our," or the "Site") collects, uses, discloses, and safeguards information when you visit marubozuscan.xyz (the "Site"), including any subdomains, tools, scanners, charts, or related pages. By accessing or using the Site, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy. If you do not agree with the terms outlined herein, please discontinue use of the Site immediately.
+    </p>
+  </div>
+
+  <nav class="toc" aria-label="Table of contents">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#section-1"><span class="num">01</span> Information We Collect</a></li>
+      <li><a href="#section-2"><span class="num">02</span> Log Files &amp; Technical Data</a></li>
+      <li><a href="#section-3"><span class="num">03</span> Cookies &amp; Web Beacons</a></li>
+      <li><a href="#section-4"><span class="num">04</span> Third-Party Advertising (Google / AdSense)</a></li>
+      <li><a href="#section-5"><span class="num">05</span> Outbound Links &amp; Third-Party Sites</a></li>
+      <li><a href="#section-6"><span class="num">06</span> How We Use Collected Information</a></li>
+      <li><a href="#section-7"><span class="num">07</span> Data Retention</a></li>
+      <li><a href="#section-8"><span class="num">08</span> User Rights &amp; Consent Management</a></li>
+      <li><a href="#section-9"><span class="num">09</span> California (CCPA) &amp; GDPR Disclosures</a></li>
+      <li><a href="#section-10"><span class="num">10</span> Children's Privacy</a></li>
+      <li><a href="#section-11"><span class="num">11</span> Data Security</a></li>
+      <li><a href="#section-12"><span class="num">12</span> Changes to This Policy</a></li>
+      <li><a href="#section-13"><span class="num">13</span> Contact Information</a></li>
+    </ol>
+  </nav>
+
+  <!-- SECTION 1 -->
+  <section class="policy-section" id="section-1">
+    <h2><span class="idx">01</span> Information We Collect</h2>
+    <p>
+      MarubozuScan is a free, publicly accessible technical analysis and stock-pattern scanning tool. We do not require account registration to view our charts, articles, or scanner results. However, in the ordinary course of operating the Site, certain categories of information may be collected automatically or voluntarily provided by you.
+    </p>
+    <h3>1.1 Information You Provide Voluntarily</h3>
+    <ul>
+      <li>Contact details (such as name and email address) if you reach out via our Contact page, email, or feedback forms.</li>
+      <li>Any content you voluntarily submit in comments, suggestions, or correspondence.</li>
+      <li>Newsletter subscription details, if and when such a feature is offered, including your email address and stated preferences.</li>
+    </ul>
+    <h3>1.2 Information Collected Automatically</h3>
+    <ul>
+      <li>Device and browser information, including operating system, screen resolution, and browser version.</li>
+      <li>Usage data such as pages visited, time spent on pages, click patterns, scroll depth, and referral sources.</li>
+      <li>Approximate geographic location derived from your IP address (typically at the city, region, or country level — not precise GPS coordinates).</li>
+      <li>Cookie identifiers and similar tracking technologies as described in Section 3 and Section 4 below.</li>
+    </ul>
+    <div class="callout info">
+      <div class="icon">i</div>
+      <p>We do not knowingly collect sensitive personal information such as government identification numbers, financial account credentials, biometric data, or health information through this Site.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="policy-section" id="section-2">
+    <h2><span class="idx">02</span> Log Files &amp; Technical Data</h2>
+    <p>
+      Like the vast majority of websites, marubozuscan.xyz uses standard web server log files. This is a normal procedure used across the hosting industry, and most hosting providers and content delivery networks do this automatically as part of their hosting services analytics.
+    </p>
+    <p>
+      The information collected by log files includes, but is not limited to, the following data points:
+    </p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Data Point</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>IP Address</td>
+            <td>Used to identify your general geographic region, troubleshoot server errors, and detect fraudulent or abusive traffic patterns.</td>
+          </tr>
+          <tr>
+            <td>Internet Service Provider (ISP)</td>
+            <td>Recorded for network diagnostics, security analysis, and identifying automated bot traffic vs. genuine human visitors.</td>
+          </tr>
+          <tr>
+            <td>Browser Type &amp; Version</td>
+            <td>Used to ensure compatibility, troubleshoot rendering issues, and optimize the scanner's user interface across devices.</td>
+          </tr>
+          <tr>
+            <td>Operating System</td>
+            <td>Collected to understand the device ecosystem of our visitors, including Android, iOS, Windows, macOS, and Linux distributions.</td>
+          </tr>
+          <tr>
+            <td>Date &amp; Timestamp</td>
+            <td>The exact date and time of access requests, used for server load analysis and security auditing.</td>
+          </tr>
+          <tr>
+            <td>Referring / Exit Pages</td>
+            <td>The URL of the page that linked you to our Site, and the page you visited immediately after leaving.</td>
+          </tr>
+          <tr>
+            <td>Click Stream Data</td>
+            <td>The sequence of pages and interactive elements (such as scanner filters) visited during a session.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      This data is <strong>not linked to any personally identifiable information</strong> in a way that would allow us to identify you individually. The sole purpose of collecting this data is for analyzing trends, administering the Site, tracking users' movement on the Site to improve user experience, and gathering broad demographic information for aggregate use. We reserve the right to use IP address and log file data to detect, investigate, and prevent activities that may violate our Terms of Use, including automated scraping, denial-of-service attempts, or other malicious activity directed at our servers.
+    </p>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="policy-section" id="section-3">
+    <h2><span class="idx">03</span> Cookies &amp; Web Beacons</h2>
+    <p>
+      A cookie is a small text file that is stored on your device by your web browser. Web beacons (sometimes called "tracking pixels" or "clear GIFs") are tiny, often invisible, graphic images used in combination with cookies to help us understand visitor behavior.
+    </p>
+    <h3>3.1 How marubozuscan.xyz Uses Cookies</h3>
+    <p>
+      MarubozuScan uses cookies to store information about visitors' preferences, to record user-specific information on which pages the user accesses or visits, and to customize web page content based on visitors' browser type or other information that the visitor sends via their browser. Specifically, our own first-party cookies may be used to:
+    </p>
+    <ul>
+      <li>Remember your preferred chart theme (e.g., dark mode vs. light mode display settings).</li>
+      <li>Store scanner filter configurations so that returning visitors do not need to re-configure their preferred candlestick pattern parameters every session.</li>
+      <li>Recognize repeat visits and measure aggregate site engagement for internal performance review.</li>
+      <li>Maintain session continuity, such as remembering your selected time-frame (e.g., daily, weekly, intraday) across page navigations.</li>
+    </ul>
+    <h3>3.2 Types of Cookies Used</h3>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Cookie Category</th>
+            <th>Purpose</th>
+            <th>Typical Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Strictly Necessary</td>
+            <td>Essential for basic site functionality, such as layout rendering and security tokens.</td>
+            <td>Session</td>
+          </tr>
+          <tr>
+            <td>Functional / Preference</td>
+            <td>Remembers display settings, language, and chart configuration choices.</td>
+            <td>Up to 12 months</td>
+          </tr>
+          <tr>
+            <td>Analytics / Performance</td>
+            <td>Helps us understand how visitors interact with the scanner and which pages are most popular.</td>
+            <td>Up to 24 months</td>
+          </tr>
+          <tr>
+            <td>Advertising</td>
+            <td>Used by third-party vendors (see Section 4) to serve relevant advertisements.</td>
+            <td>Varies by vendor (typically up to 13 months)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>3.3 Managing Cookies</h3>
+    <p>
+      You are able to delete cookies or instruct your browser to delete or refuse cookies at any time via your browser settings. The procedure for managing cookies varies by browser; please consult your browser's "Help," "Settings," or "Privacy" menu for specific instructions. If you choose to disable cookies, some features of this Site — such as scanner filter persistence — may not function as intended.
+    </p>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="policy-section" id="section-4">
+    <h2><span class="idx">04</span> Third-Party Advertising (Google / AdSense)</h2>
+    <div class="callout warn">
+      <div class="icon">!</div>
+      <p>This section contains mandatory disclosures regarding third-party advertising vendors, including Google. Please read this section carefully, as it directly affects how advertisements are displayed to you across the Internet.</p>
+    </div>
+    <p>
+      Third-party vendors, including <strong>Google</strong>, use cookies to serve ads based on a user's prior visits to marubozuscan.xyz and other websites on the Internet. Google's use of advertising cookies, including the <strong>DART cookie</strong>, enables Google and its partners to serve ads to our users based on their visit to our Site and/or other sites on the Internet.
+    </p>
+    <p>
+      MarubozuScan participates in Google AdSense and/or other contextual and behavioral advertising networks. These third-party ad servers or ad networks use technology to send, directly to your browser, the advertisements and links that appear on marubozuscan.xyz. When this occurs, they automatically receive your IP address, which may be used to deliver advertisements tailored to your geographic location or interests.
+    </p>
+    <h3>4.1 What Information Advertising Partners May Collect</h3>
+    <ul>
+      <li>Cookie data and unique advertising identifiers stored on your device.</li>
+      <li>Your IP address and approximate location.</li>
+      <li>Pages viewed, time spent on pages, and click-through behavior on advertisements.</li>
+      <li>Aggregate, non-personally-identifiable demographic and interest category data inferred from browsing history across multiple sites.</li>
+    </ul>
+    <h3>4.2 Personalized vs. Non-Personalized Advertising</h3>
+    <p>
+      Google's use of advertising cookies enables it and its partners to serve ads based on your visits to this Site and/or other sites on the Internet. You may opt out of the use of the DART cookie and personalized advertising by visiting the
+      <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">Google Advertising and Privacy page</a>
+      and the
+      <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">Google Ads Settings page</a>.
+    </p>
+    <h3>4.3 Other Advertising Networks</h3>
+    <p>
+      Some of our advertising partners may include other third-party ad networks, ad exchanges, and analytics service providers in addition to Google. These third-party advertising companies may also have their own privacy policies governing the data collection practices for their advertisements. Users should review the respective privacy policies of these third-party ad servers for more detailed information regarding their practices, including information about how to opt out of certain practices. A general index of advertising opt-out options can be found via the
+      <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer">Digital Advertising Alliance's consumer opt-out page</a> and the
+      <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener noreferrer">Network Advertising Initiative opt-out page</a>.
+    </p>
+    <div class="callout info">
+      <div class="icon">i</div>
+      <p>MarubozuScan itself has no direct access to or control over the cookies placed by third-party advertisers. This Privacy Policy applies only to our own data practices and does not extend to the practices of third-party advertisers or ad networks.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="policy-section" id="section-5">
+    <h2><span class="idx">05</span> Outbound Links &amp; Third-Party Sites</h2>
+    <p>
+      Throughout the Site, including on our financial disclaimer pages, scanner result pages, and educational articles, you may encounter hyperlinks that direct you to other internal sub-pages (such as our <a href="disclaimer.html">Disclaimer</a> page) as well as to external third-party websites, including financial data providers, brokerage platforms, news outlets, and educational resources.
+    </p>
+    <p>
+      We provide these links solely for the convenience of our users. The inclusion of any link does not imply endorsement, sponsorship, or affiliation by MarubozuScan with the linked site, its owners, or its content, unless explicitly stated otherwise.
+    </p>
+    <ul>
+      <li>We do not review, control, or monitor the content, accuracy, privacy practices, or terms of use of any linked third-party websites.</li>
+      <li>We are <strong>not responsible</strong> for the data collection practices, cookie policies, security standards, or content displayed on any external site you access via links found on marubozuscan.xyz.</li>
+      <li>Once you leave our Site by clicking an outbound link, this Privacy Policy no longer applies, and your interactions are governed by the privacy policy and terms of the destination site.</li>
+      <li>We strongly encourage users to review the privacy policy and terms of service of every third-party site they visit, particularly before submitting any personal or financial information.</li>
+    </ul>
+    <div class="callout danger">
+      <div class="icon">!</div>
+      <p>MarubozuScan disclaims all liability for any loss, damage, or harm arising from your use of, or reliance on, any third-party website accessed through outbound links on this Site.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section class="policy-section" id="section-6">
+    <h2><span class="idx">06</span> How We Use Collected Information</h2>
+    <p>The information described in the preceding sections may be used by MarubozuScan for the following purposes:</p>
+    <ul>
+      <li>To operate, maintain, and improve the functionality, performance, and security of the Site.</li>
+      <li>To analyze usage trends and understand which scanner tools, chart patterns, or articles are most valuable to our audience.</li>
+      <li>To detect, prevent, and address technical issues, fraud, abuse, or violations of our Terms of Use.</li>
+      <li>To display relevant third-party advertisements, as described in Section 4, which helps support the operation of this free-to-use Site.</li>
+      <li>To respond to inquiries, feedback, or support requests submitted via our Contact page.</li>
+      <li>To comply with applicable legal obligations, regulatory requests, or enforceable governmental requests.</li>
+    </ul>
+    <p>
+      We do <strong>not</strong> sell, rent, or trade your personally identifiable information to third parties for their marketing purposes without your explicit consent, except as may be required by law or as necessary to provide the advertising services described in Section 4.
+    </p>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section class="policy-section" id="section-7">
+    <h2><span class="idx">07</span> Data Retention</h2>
+    <p>
+      We retain log file data, analytics data, and cookie-derived information only for as long as is reasonably necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by applicable law (such as for tax, accounting, security auditing, or legal compliance purposes).
+    </p>
+    <p>
+      Where you have voluntarily submitted contact information (e.g., via our Contact page), we retain such correspondence only for as long as necessary to address your inquiry and for a reasonable period thereafter for record-keeping purposes, after which it may be securely deleted or anonymized.
+    </p>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section class="policy-section" id="section-8">
+    <h2><span class="idx">08</span> User Rights &amp; Consent Management</h2>
+    <p>
+      We respect your right to control your personal information. Depending on your jurisdiction, you may have some or all of the following rights with respect to data collected about you on this Site:
+    </p>
+    <ul>
+      <li><strong>Right to Access</strong> — You may request information about the categories of data we collect and how it is used.</li>
+      <li><strong>Right to Rectification</strong> — You may request correction of inaccurate or incomplete personal information you have provided to us.</li>
+      <li><strong>Right to Erasure ("Right to be Forgotten")</strong> — You may request deletion of personal information you have voluntarily provided, subject to certain legal exceptions.</li>
+      <li><strong>Right to Restrict or Object to Processing</strong> — You may object to certain types of processing, including for direct marketing purposes.</li>
+      <li><strong>Right to Withdraw Consent</strong> — Where processing is based on consent (such as non-essential cookies), you may withdraw that consent at any time without affecting the lawfulness of processing prior to withdrawal.</li>
+      <li><strong>Right to Data Portability</strong> — Where applicable, you may request a copy of your personal data in a structured, commonly used, machine-readable format.</li>
+      <li><strong>Right to Opt Out of Targeted Advertising</strong> — As described in Section 4, you may opt out of personalized advertising via Google's Ad Settings and industry-wide opt-out tools.</li>
+    </ul>
+    <h3>8.1 How to Exercise Your Rights</h3>
+    <p>
+      To exercise any of the rights described above, please contact us using the details provided in Section 13. We will respond to verifiable requests within a reasonable timeframe and in accordance with applicable law. We may need to request additional information from you to verify your identity before processing certain requests.
+    </p>
+    <h3>8.2 Browser-Level Controls</h3>
+    <p>
+      Most modern browsers allow you to control cookies through their settings, including blocking all cookies, blocking third-party cookies only, or clearing cookies upon closing the browser. Additionally, many mobile operating systems, including Android, provide settings that allow you to limit ad tracking or reset your advertising identifier.
+    </p>
+    <p>
+      Please note that disabling cookies entirely may impact your experience on this Site, including the persistence of scanner preferences and theme settings described in Section 3.
+    </p>
+  </section>
+
+  <!-- SECTION 9 -->
+  <section class="policy-section" id="section-9">
+    <h2><span class="idx">09</span> California (CCPA/CPRA) &amp; GDPR Disclosures</h2>
+    <h3>9.1 California Residents</h3>
+    <p>
+      If you are a California resident, the California Consumer Privacy Act (CCPA), as amended by the California Privacy Rights Act (CPRA), may provide you with additional rights regarding your personal information, including the right to know what personal information is collected, the right to request deletion of personal information, the right to opt out of the "sale" or "sharing" of personal information (which, under CCPA's broad definition, may include certain interest-based advertising activities), and the right to non-discrimination for exercising your privacy rights.
+    </p>
+    <p>
+      To the extent that the use of advertising cookies described in Section 4 constitutes a "sale" or "sharing" of personal information under the CCPA/CPRA, you may submit an opt-out request using the methods described in Section 4.2 or by contacting us directly as described in Section 13.
+    </p>
+    <h3>9.2 European Economic Area (EEA), UK, and Switzerland Residents</h3>
+    <p>
+      If you are located in the European Economic Area, the United Kingdom, or Switzerland, you may have rights under the General Data Protection Regulation (GDPR) or the UK GDPR, including the rights enumerated in Section 8 above. Our legal basis for processing your information typically relies on: (a) your consent, particularly for non-essential cookies and personalized advertising; (b) our legitimate interests in operating, securing, and improving the Site; and (c) compliance with legal obligations where applicable.
+    </p>
+    <p>
+      Where consent is the legal basis for processing (e.g., advertising and analytics cookies), such cookies will only be set following your interaction with any applicable cookie consent mechanism presented on the Site, if and where required by applicable law.
+    </p>
+  </section>
+
+  <!-- SECTION 10 -->
+  <section class="policy-section" id="section-10">
+    <h2><span class="idx">10</span> Children's Privacy</h2>
+    <p>
+      MarubozuScan does not knowingly collect personal information from children under the age of 13 (or the relevant minimum age in your jurisdiction). This Site is intended for general financial education and market analysis audiences and is not directed at children. If you believe that a child has provided us with personal information, please contact us immediately using the details in Section 13, and we will take steps to investigate and, where appropriate, delete such information from our records.
+    </p>
+  </section>
+
+  <!-- SECTION 11 -->
+  <section class="policy-section" id="section-11">
+    <h2><span class="idx">11</span> Data Security</h2>
+    <p>
+      We implement reasonable administrative, technical, and physical safeguards designed to protect the information collected through the Site from unauthorized access, disclosure, alteration, or destruction. These measures include the use of encrypted connections (HTTPS/TLS) for data transmitted between your browser and our servers, restricted access to server logs, and routine review of our security practices.
+    </p>
+    <p>
+      However, please be aware that no method of transmission over the Internet, and no method of electronic storage, is 100% secure. While we strive to use commercially acceptable means to protect your information, we cannot guarantee its absolute security.
+    </p>
+  </section>
+
+  <!-- SECTION 12 -->
+  <section class="policy-section" id="section-12">
+    <h2><span class="idx">12</span> Changes to This Policy</h2>
+    <p>
+      We reserve the right to update or modify this Privacy Policy at any time without prior notice. Any changes will be reflected by an updated "Last Updated" date at the top of this page. We encourage visitors to review this Privacy Policy periodically to stay informed about how we are protecting the information we collect. Your continued use of the Site following the posting of changes constitutes your acceptance of those changes.
+    </p>
+  </section>
+
+  <!-- SECTION 13 -->
+  <section class="policy-section" id="section-13">
+    <h2><span class="idx">13</span> Contact Information</h2>
+    <p>
+      If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, including requests to exercise your privacy rights as described in Section 8 and Section 9, please contact us through the channels listed on our <a href="contact.html">Contact page</a>.
+    </p>
+    <p>
+      We will make reasonable efforts to respond to legitimate inquiries in a timely manner, consistent with applicable legal requirements.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-wrap">
+    <div class="footer-links">
+      <a href="index.html">Dashboard</a>
+      <a href="about.html">About</a>
+      <a href="disclaimer.html">Disclaimer</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+    <div class="footer-disclaimer">
+      MarubozuScan provides technical analysis tools, candlestick pattern scanners, and educational market commentary for informational purposes only. Nothing on this Site constitutes financial, investment, legal, or tax advice, nor a recommendation to buy or sell any security. Trading and investing involve substantial risk of loss. Always conduct your own due diligence and consult a licensed financial professional before making investment decisions. Please refer to our <a href="disclaimer.html">Financial Disclaimer</a> for full terms.
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MarubozuScan. All rights reserved.</span>
+      <span>marubozuscan.xyz</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — MarubozuScan | Algorithmic Candlestick Analysis</title>
+  <meta name="description" content="Learn about the developer background, technical infrastructure, and algorithmic methodology behind MarubozuScan's 24/7 real-time candlestick pattern detection engine." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <link rel="canonical" href="https://marubozuscan.xyz/about.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="MarubozuScan" />
+  <meta property="og:title" content="About — MarubozuScan | Algorithmic Candlestick Analysis" />
+  <meta property="og:description" content="Learn about the developer background, technical infrastructure, and algorithmic methodology behind MarubozuScan's 24/7 real-time candlestick pattern detection engine." />
+  <meta property="og:url" content="https://marubozuscan.xyz/about.html" />
+  <meta property="og:image" content="https://marubozuscan.xyz/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@marubozuscan" />
+  <meta name="twitter:title" content="About — MarubozuScan | Algorithmic Candlestick Analysis" />
+  <meta name="twitter:description" content="Learn about the developer background, technical infrastructure, and algorithmic methodology behind MarubozuScan's 24/7 real-time candlestick pattern detection engine." />
+  <meta name="twitter:image" content="https://marubozuscan.xyz/og-image.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VG8Z654LLK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-VG8Z654LLK');
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary:    #0a0c10;
+      --bg-secondary:  #0f1218;
+      --bg-card:       #13171f;
+      --bg-card-hover: #181d27;
+      --border:        #1e2535;
+      --border-light:  #252d3d;
+      --accent-green:  #00d68f;
+      --accent-green2: #00a86b;
+      --accent-blue:   #3b82f6;
+      --accent-amber:  #f59e0b;
+      --accent-red:    #ef4444;
+      --text-primary:  #e8eaf0;
+      --text-secondary:#8b95a8;
+      --text-muted:    #4a5568;
+      --text-mono:     #64ffda;
+      --font-sans:     'Inter', system-ui, sans-serif;
+      --font-mono:     'IBM Plex Mono', 'Courier New', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: clamp(14px, 2.2vw, 16px);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .topbar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--accent-green);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+    .logo span { color: var(--text-secondary); }
+    nav { display: flex; gap: 0.25rem; }
+    nav a {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: color 0.2s, background 0.2s;
+    }
+    nav a:hover, nav a.active {
+      color: var(--accent-green);
+      background: rgba(0, 214, 143, 0.07);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 3.5rem 1.5rem 3rem;
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; }
+    .hero-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-green);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .hero-label::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: var(--accent-green);
+    }
+    .hero h1 {
+      font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .hero-sub {
+      color: var(--text-secondary);
+      max-width: 640px;
+      font-size: 1rem;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .content-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .content-wrap { grid-template-columns: 1fr; padding: 2rem 1rem 3rem; }
+      .hero { padding: 2rem 1rem 1.75rem; }
+      nav { flex-wrap: wrap; gap: 0.15rem; }
+      .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
+    }
+    @media (max-width: 480px) {
+      .spec-grid { grid-template-columns: 1fr; }
+      .section h2 { font-size: 1.1rem; }
+      .hero h1 { font-size: 1.6rem; }
+      nav a { font-size: 0.65rem; padding: 0.3rem 0.5rem; }
+    }
+
+    /* ── SECTIONS ── */
+    .section { margin-bottom: 3rem; }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      margin-bottom: 0.6rem;
+    }
+    .section h2 {
+      font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.1rem;
+      color: var(--text-primary);
+    }
+    .section p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+    .section p:last-child { margin-bottom: 0; }
+
+    hr.section-rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* ── SPEC GRID ── */
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+    .spec-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+    }
+    .spec-card .spec-key {
+      font-family: var(--font-mono);
+      font-size: 0.63rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+    .spec-card .spec-val {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-mono);
+      font-weight: 500;
+    }
+
+    /* ── METHODOLOGY LIST ── */
+    .method-list { list-style: none; margin-top: 1.1rem; }
+    .method-list li {
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 0.93rem;
+    }
+    .method-list li:last-child { border-bottom: none; }
+    .method-list .badge {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      background: rgba(0, 214, 143, 0.1);
+      color: var(--accent-green);
+      border: 1px solid rgba(0, 214, 143, 0.25);
+      border-radius: 3px;
+      padding: 0.15rem 0.45rem;
+      white-space: nowrap;
+      margin-top: 0.15rem;
+      flex-shrink: 0;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+    .sidebar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+    .sidebar-card h3 {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+    }
+    .stat-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .stat-row .label { color: var(--text-muted); }
+    .stat-row .value {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent-green);
+      font-weight: 500;
+    }
+    .uptime-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      margin-right: 6px;
+      box-shadow: 0 0 6px var(--accent-green);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.25rem; }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.63rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      color: var(--text-secondary);
+      border-radius: 3px;
+      padding: 0.2rem 0.5rem;
+    }
+
+    /* ── BLOCKQUOTE ── */
+    .commitment-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent-green);
+      border-radius: 0 8px 8px 0;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .commitment-block p {
+      color: var(--text-primary) !important;
+      font-size: 0.93rem;
+      font-style: italic;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent-green); }
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="logo">MARUBOZU<span>.scan</span></a>
+    <nav>
+      <a href="index.html">Dashboard</a>
+      <a href="about.html" class="active">About</a>
+      <a href="disclaimer.html">Disclaimer</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">About This Project</div>
+    <h1>Algorithmic Candlestick<br />Intelligence Platform</h1>
+    <p class="hero-sub">
+      An independent research and development initiative focused on the mathematical identification
+      of high-probability Marubozu candlestick patterns across global financial markets — built, maintained,
+      and operated by a solo developer as a continuous educational tracking exercise.
+    </p>
+  </div>
+</section>
+
+<!-- BODY -->
+<div class="content-wrap">
+  <main>
+
+    <!-- DEVELOPER BACKGROUND -->
+    <article class="section">
+      <div class="section-label">Developer Profile</div>
+      <h2>Background &amp; Professional Experience</h2>
+      <p>
+        MarubozuScan is designed, built, and operated by a self-directed algorithmic systems developer with
+        over a decade of hands-on experience in quantitative financial data analysis, full-stack web engineering,
+        and automated market surveillance systems. The project emerged from a long-standing academic interest
+        in Japanese candlestick charting methodology — specifically the mathematical geometry of the Marubozu
+        formation — and the absence of a dedicated, open-access, real-time scanning tool for this pattern class.
+      </p>
+      <p>
+        My professional background spans financial technology (FinTech) backend development, statistical signal
+        processing for time-series data, and the design of rule-based algorithmic engines that operate without
+        discretionary human input. Prior to launching this platform, I spent several years working on proprietary
+        market data aggregation pipelines and price-action alert systems for personal research purposes, building
+        a rigorous understanding of OHLC (Open, High, Low, Close) data structures, exchange APIs, and the
+        mathematical definitions that distinguish genuine pattern formations from noise.
+      </p>
+      <p>
+        MarubozuScan is the public-facing, educational expression of that research — a commitment to publishing
+        transparent, fully documented, real-time candlestick scan results so that other market students and
+        technical analysis enthusiasts can observe, study, and learn from pattern data in a live market context.
+      </p>
+    </article>
+
+    <hr class="section-rule" />
+
+    <!-- ALGORITHMIC GOALS -->
+    <article class="section">
+      <div class="section-label">Core Objectives</div>
+      <h2>Algorithmic Goals &amp; Research Mission</h2>
+      <p>
+        The primary mission of this platform is the systematic, real-time identification of Marubozu candlestick
+        formations — candles characterized by minimal or absent upper and lower shadows, indicating decisive,
+        one-sided price action across a given timeframe. The algorithmic goals of this project are strictly
+        educational and analytical in nature:
+      </p>
+
+      <ul class="method-list">
+        <li>
+          <span class="badge">OBJ-01</span>
+          <span>
+            <strong style="color: var(--text-primary);">Mathematical Pattern Fidelity.</strong>
+            To apply precise, configurable mathematical thresholds to OHLC candlestick data that distinguish
+            valid Marubozu formations (Full, Bullish, and Bearish variants) from partial or ambiguous patterns,
+            using shadow-to-body ratio calculations as the primary discriminator.
+          </span>
+        </li>
+        <li>
+          <span class="badge">OBJ-02</span>
+          <span>
+            <strong style="color: var(--text-primary);">Multi-Asset, Multi-Timeframe Coverage.</strong>
+            To continuously scan a broad universe of instruments — including major Forex pairs, cryptocurrency
+            spot markets, and global equity indices — across multiple candlestick timeframes (M15, H1, H4, D1)
+            simultaneously, providing a comprehensive and timely snapshot of pattern emergence.
+          </span>
+        </li>
+        <li>
+          <span class="badge">OBJ-03</span>
+          <span>
+            <strong style="color: var(--text-primary);">Data Transparency &amp; Auditability.</strong>
+            To present all detected pattern data with full attribution: the instrument, exchange, timeframe,
+            OHLC values, detection timestamp (UTC), and the specific ratio values that triggered the classification,
+            allowing any visitor to independently verify each result against their own charting platform.
+          </span>
+        </li>
+        <li>
+          <span class="badge">OBJ-04</span>
+          <span>
+            <strong style="color: var(--text-primary);">Zero Predictive or Advisory Claims.</strong>
+            To present all scan outputs strictly as historical and real-time descriptive data — never as forward-looking
+            trade signals, investment advice, or performance forecasts. The platform documents what has occurred
+            mathematically; it makes no claim about what will occur next.
+          </span>
+        </li>
+        <li>
+          <span class="badge">OBJ-05</span>
+          <span>
+            <strong style="color: var(--text-primary);">Open Educational Resource.</strong>
+            To serve as a free, accessible learning tool for students of technical analysis who wish to study
+            the real-world frequency, distribution, and structural characteristics of Marubozu patterns across
+            live market conditions — a resource the developer wished had existed during their own learning phase.
+          </span>
+        </li>
+      </ul>
+    </article>
+
+    <hr class="section-rule" />
+
+    <!-- TECHNICAL INFRASTRUCTURE -->
+    <article class="section">
+      <div class="section-label">Technical Infrastructure</div>
+      <h2>24/7 Self-Hosted Workstation Architecture</h2>
+      <p>
+        The platform operates on a purpose-built, self-hosted workstation located at a dedicated
+        residential data node maintained by the developer. Unlike cloud-only deployments that introduce
+        latency variance and cold-start delays, this infrastructure prioritizes low-latency, high-availability
+        data ingestion through a persistent hardware setup running continuously without interruption.
+      </p>
+
+      <div class="spec-grid">
+        <div class="spec-card">
+          <div class="spec-key">Compute</div>
+          <div class="spec-val">x86-64 Dedicated Workstation</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-key">Operating System</div>
+          <div class="spec-val">Ubuntu Server LTS</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-key">Scan Engine</div>
+          <div class="spec-val">Python 3.11+ / asyncio</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-key">Data Feed</div>
+          <div class="spec-val">Multi-broker WebSocket API</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-key">Data Store</div>
+          <div class="spec-val">TimescaleDB (PostgreSQL)</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-key">Web Layer</div>
+          <div class="spec-val">Nginx + Gunicorn / WSGI</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-key">Uptime Target</div>
+          <div class="spec-val">99.6% / 24 hrs / 365 days</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-key">Monitoring</div>
+          <div class="spec-val">Prometheus + Grafana Stack</div>
+        </div>
+      </div>
+
+      <p style="margin-top: 1.5rem;">
+        Market data is ingested via authenticated WebSocket connections to multiple broker and
+        exchange APIs, providing redundant OHLC tick data across covered instruments. Each incoming candle is
+        immediately parsed, validated against data-quality checks (gap detection, timestamp continuity,
+        volume sanity), and passed to the pattern detection engine. Detected patterns are written to a
+        time-series database with full metadata and served to the front-end dashboard via a lightweight REST
+        API with server-sent events (SSE) for live push updates.
+      </p>
+      <p>
+        Scheduled cron jobs perform daily data integrity reconciliation, comparing stored candle records
+        against reference data from secondary sources to detect and flag any discrepancies. All system events,
+        errors, and pattern detection logs are retained for a rolling 90-day window, available for review
+        upon reasonable request.
+      </p>
+    </article>
+
+    <hr class="section-rule" />
+
+    <!-- MATHEMATICAL METHODOLOGY -->
+    <article class="section">
+      <div class="section-label">Pattern Detection Methodology</div>
+      <h2>Pure Candlestick Mathematical Tracking</h2>
+      <p>
+        The detection algorithm applies a strict, parameter-driven mathematical definition to each closed
+        candlestick. This approach deliberately avoids interpretive or heuristic shorthand — every
+        classification is the direct output of arithmetic operations on the four OHLC price values.
+      </p>
+
+      <div class="commitment-block">
+        <p>
+          "The only authority in this system is arithmetic. If a candle's upper shadow exceeds the defined
+          threshold as a percentage of total body length, it is not classified as a Marubozu — regardless of
+          visual appearance. The math is the rule, and the rule is documented and fixed."
+        </p>
+      </div>
+
+      <p>
+        The core detection formula operates as follows: the candle body is defined as the absolute difference
+        between the open and close prices. The upper shadow is the distance from the higher of open/close to
+        the candle high. The lower shadow is the distance from the candle low to the lower of open/close.
+        A full Marubozu is declared when both the upper shadow ratio (upper shadow ÷ body) and the lower
+        shadow ratio (lower shadow ÷ body) fall below a configurable maximum threshold — defaulting to 1.5%
+        for each — and the body itself represents at least a minimum percentage of the total candle range.
+      </p>
+      <p>
+        Bullish and Bearish half-Marubozu variants are detected independently by testing only the relevant
+        shadow (the shadow on the side of the opening price for a Bullish, or the closing price for a Bearish).
+        All threshold parameters are version-controlled and documented in the project's public-facing
+        methodology page, ensuring that any observer can replicate results given the same raw OHLC data.
+      </p>
+    </article>
+
+    <hr class="section-rule" />
+
+    <!-- E-E-A-T COMMITMENT -->
+    <article class="section">
+      <div class="section-label">Commitment &amp; Standards</div>
+      <h2>Our Commitment to Accuracy and Transparency</h2>
+      <p>
+        MarubozuScan is maintained as a personal research and educational publishing project. There is no
+        investor, no sponsor, and no commercial entity directing the content or methodology of this platform.
+        Every design decision — from the pattern detection thresholds to the data display format — is made
+        solely by the developer with the goal of maximum transparency and educational utility.
+      </p>
+      <p>
+        We are committed to maintaining and publicly documenting the following standards: clearly labeled
+        detection timestamps and data sources for every scan result; a public changelog for any modifications
+        to detection parameters; explicit, repeated disclosure on all pages that this platform provides
+        educational data only and does not constitute financial advice; and prompt correction and public
+        acknowledgment of any errors in data processing or pattern classification.
+      </p>
+      <p>
+        This platform does not accept payment from brokers, signal services, or any third party for placement,
+        promotion, or favorable presentation of any instrument, strategy, or service. Any third-party
+        advertising displayed on this site (through Google AdSense) is served automatically by Google's
+        algorithms and does not represent endorsement of any advertised product or service by the site operator.
+      </p>
+    </article>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-card">
+      <h3>System Status</h3>
+      <div class="stat-row">
+        <span class="label">Engine</span>
+        <span class="value"><span class="uptime-dot"></span>Live</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Data Feeds</span>
+        <span class="value">Active</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Last Scan Cycle</span>
+        <span class="value">&lt; 60s ago</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Uptime Target</span>
+        <span class="value">24/7 / 365</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Data Mode</span>
+        <span class="value">Read-Only</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Coverage Universe</h3>
+      <div class="stat-row">
+        <span class="label">Forex Majors</span>
+        <span class="value">28 pairs</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Crypto Spot</span>
+        <span class="value">Top 40</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Indices CFD</span>
+        <span class="value">12 global</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Timeframes</span>
+        <span class="value">M15 / H1 / H4 / D1</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Technology Stack</h3>
+      <div class="tag-list">
+        <span class="tag">Python 3.11</span>
+        <span class="tag">asyncio</span>
+        <span class="tag">WebSocket</span>
+        <span class="tag">TimescaleDB</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">REST API</span>
+        <span class="tag">SSE Push</span>
+        <span class="tag">Nginx</span>
+        <span class="tag">Ubuntu LTS</span>
+        <span class="tag">Prometheus</span>
+        <span class="tag">Grafana</span>
+        <span class="tag">Docker</span>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Legal &amp; Compliance</h3>
+      <div class="stat-row">
+        <span class="label">Advisory Status</span>
+        <span class="value" style="color: var(--accent-amber);">Educational Only</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Regulated Activity</span>
+        <span class="value" style="color: var(--accent-red);">None</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Data Accounts</span>
+        <span class="value" style="color: var(--accent-amber);">Demo / Virtual</span>
+      </div>
+      <div class="stat-row">
+        <span class="label">Disclaimer</span>
+        <span class="value"><a href="disclaimer.html" style="color: var(--accent-blue); text-decoration: none;">View →</a></span>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="index.html">Dashboard</a>
+      <a href="about.html">About</a>
+      <a href="disclaimer.html">Disclaimer</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+    <p class="footer-copy">© 2024–2025 MarubozuScan. All scan data is for educational purposes only. Not financial advice.</p>
+  </div>
+</footer>
+
+</body>
+</html>
