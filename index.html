@@ -1729,7 +1729,7 @@
     ───────────────────────────────────────────── */
     const CONFIG = {
       POLL_INTERVAL_S: 5,       // live-poll cadence in seconds
-      SIGNALS_LIMIT:   50,      // max rows to fetch from market_signals
+      SIGNALS_LIMIT:   252,     // max rows: 28 pairs × 9 timeframes (one row per ticker×TF)
       TELEMETRY_LIMIT: 20       // max rows to fetch from account_telemetry
     };
 
