@@ -788,16 +788,43 @@
       text-align: right;
     }
 
-    /* Strategy Filter Tabs */
+    /* Strategy Filter Bar */
+    .filter-bar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
+    }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .filter-row-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--neutral);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      min-width: 72px;
+      flex-shrink: 0;
+    }
+
     .filter-tabs {
       display: flex;
       flex-wrap: wrap;
       gap: var(--space-2);
-      margin-bottom: var(--space-5);
     }
 
     .filter-tab {
-      padding: 10px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
       background: var(--bg-elevated);
       border: 1px solid var(--border-default);
       border-radius: 99px;
@@ -807,7 +834,7 @@
       color: #7a8fa6;
       cursor: pointer;
       transition: all var(--transition);
-      min-height: 40px;
+      min-height: 36px;
       min-width: unset;
       white-space: nowrap;
     }
@@ -823,6 +850,84 @@
       color: var(--accent);
       font-weight: 600;
     }
+
+    .filter-tab .tab-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 99px;
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: inherit;
+      opacity: 0.75;
+      transition: opacity var(--transition);
+    }
+
+    .filter-tab.active .tab-count {
+      background: rgba(0,212,255,0.15);
+      opacity: 1;
+    }
+
+    /* Direction filter pill colors */
+    .filter-tab[data-filter="B"].active {
+      background: var(--bullish-dim);
+      border-color: rgba(0,230,118,0.4);
+      color: var(--bullish);
+    }
+
+    .filter-tab[data-filter="S"].active {
+      background: var(--bearish-dim);
+      border-color: rgba(255,61,90,0.4);
+      color: var(--bearish);
+    }
+
+    /* Volume filter */
+    .filter-tab[data-filter="C"].active {
+      background: var(--bullish-dim);
+      border-color: rgba(0,230,118,0.35);
+      color: var(--bullish);
+    }
+
+    .filter-tab[data-filter="P"].active {
+      background: var(--warning-dim);
+      border-color: rgba(255,179,0,0.35);
+      color: var(--warning);
+    }
+
+    /* Timeframe filter */
+    .filter-tab[data-filter="H1"].active,
+    .filter-tab[data-filter="H4"].active,
+    .filter-tab[data-filter="D1"].active {
+      background: rgba(41,182,246,0.1);
+      border-color: rgba(41,182,246,0.35);
+      color: #29b6f6;
+    }
+
+    /* Clear filters link */
+    .filter-clear {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--neutral);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      transition: color var(--transition);
+      min-height: unset;
+      min-width: unset;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      align-self: center;
+    }
+
+    .filter-clear:hover { color: var(--accent); }
+    .filter-clear[hidden] { display: none; }
 
     /* ════════════════════════════════════════════════════════
        DATA TABLES
@@ -1454,14 +1559,56 @@
           </div>
         </div>
 
-        <!-- Strategy Filter Tabs -->
-        <nav class="filter-tabs" role="tablist" aria-label="Filter signals by strategy context">
-          <button class="filter-tab active" role="tab" aria-selected="true" data-filter="all" aria-controls="signal-table-body">All</button>
-          <button class="filter-tab" role="tab" aria-selected="false" data-filter="Breakout" aria-controls="signal-table-body">Breakouts</button>
-          <button class="filter-tab" role="tab" aria-selected="false" data-filter="Continuation" aria-controls="signal-table-body">Continuations</button>
-          <button class="filter-tab" role="tab" aria-selected="false" data-filter="Reversal" aria-controls="signal-table-body">Reversals</button>
-          <button class="filter-tab" role="tab" aria-selected="false" data-filter="False Breakout" aria-controls="signal-table-body">False Breakouts</button>
-        </nav>
+        <!-- Multi-row Filter Bar -->
+        <div class="filter-bar" id="filter-bar" aria-label="Filter signals">
+
+          <!-- Row 1: Strategy Context -->
+          <div class="filter-row">
+            <span class="filter-row-label">Context</span>
+            <div class="filter-tabs" role="tablist" aria-label="Filter by strategy context" id="ctx-tabs">
+              <button class="filter-tab active" role="tab" aria-selected="true"  data-filter-type="ctx" data-filter="all">All <span class="tab-count" id="cnt-ctx-all">—</span></button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="ctx" data-filter="Breakout">Breakouts <span class="tab-count" id="cnt-ctx-Breakout">—</span></button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="ctx" data-filter="Continuation">Continuations <span class="tab-count" id="cnt-ctx-Continuation">—</span></button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="ctx" data-filter="Reversal">Reversals <span class="tab-count" id="cnt-ctx-Reversal">—</span></button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="ctx" data-filter="False Breakout">False Breakouts <span class="tab-count" id="cnt-ctx-FalseBreakout">—</span></button>
+            </div>
+          </div>
+
+          <!-- Row 2: Direction -->
+          <div class="filter-row">
+            <span class="filter-row-label">Direction</span>
+            <div class="filter-tabs" role="tablist" aria-label="Filter by direction" id="dir-tabs">
+              <button class="filter-tab active" role="tab" aria-selected="true"  data-filter-type="dir" data-filter="all">Both</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="dir" data-filter="B">▲ Bullish</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="dir" data-filter="S">▼ Bearish</button>
+            </div>
+          </div>
+
+          <!-- Row 3: Volume + Timeframe + Clear -->
+          <div class="filter-row">
+            <span class="filter-row-label">Volume</span>
+            <div class="filter-tabs" role="tablist" aria-label="Filter by volume status" id="vol-tabs">
+              <button class="filter-tab active" role="tab" aria-selected="true"  data-filter-type="vol" data-filter="all">All</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="vol" data-filter="C">&#9679; Confirmed</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="vol" data-filter="P">&#9680; Pending</button>
+            </div>
+            <span class="filter-row-label" style="margin-left:var(--space-3)">Timeframe</span>
+            <div class="filter-tabs" role="tablist" aria-label="Filter by timeframe" id="tf-tabs">
+              <button class="filter-tab active" role="tab" aria-selected="true"  data-filter-type="tf" data-filter="all">All</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="tf" data-filter="M1">M1</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="tf" data-filter="M5">M5</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="tf" data-filter="M15">M15</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="tf" data-filter="M30">M30</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="tf" data-filter="H1">H1</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="tf" data-filter="H4">H4</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="tf" data-filter="D1">D1</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="tf" data-filter="W1">W1</button>
+              <button class="filter-tab" role="tab" aria-selected="false" data-filter-type="tf" data-filter="MN1">MN1</button>
+            </div>
+            <button class="filter-clear" id="filter-clear-btn" hidden>&#x2715; Clear filters</button>
+          </div>
+
+        </div>
 
         <!-- Grid A: Live Pattern Signals -->
         <div class="table-panel">
@@ -1769,11 +1916,13 @@
     const pollCountdown    = document.getElementById('poll-countdown');
     const heroCountdown    = document.getElementById('hero-countdown');
     const filterTabs       = document.querySelectorAll('.filter-tab');
+    const filterClearBtn   = document.getElementById('filter-clear-btn');
 
     /* ─────────────────────────────────────────────
        STATE
     ───────────────────────────────────────────── */
-    let activeFilter       = 'all';
+    let activeFilters      = { ctx: 'all', dir: 'all', vol: 'all', tf: 'all' };
+    let activeFilter       = 'all'; // legacy alias used by renderTerminalLog; kept for compat
     let countdownValue     = CONFIG.POLL_INTERVAL_S;
     let countdownTimer     = null;
     let allSignalRows      = [];
@@ -1933,6 +2082,9 @@
       signals.forEach(function (s, i) {
         const tr = document.createElement('tr');
         tr.setAttribute('data-context', s.cx || '');
+        tr.setAttribute('data-dir',     s.dr || '');
+        tr.setAttribute('data-vol',     s.vs || '');
+        tr.setAttribute('data-tf',      s.tf || '');
         tr.setAttribute('data-index', i);
         tr.innerHTML = `
           <td class="cell-ticker">${escapeHTML(s.tk)}</td>
@@ -1949,7 +2101,8 @@
 
       sigBody.innerHTML = '';
       sigBody.appendChild(fragment);
-      applyFilter(activeFilter);
+      updateContextCounts(signals);
+      applyFilter();
     }
 
     /* ─────────────────────────────────────────────
@@ -1993,31 +2146,95 @@
     }
 
     /* ─────────────────────────────────────────────
-       STRATEGY FILTER
+       MULTI-DIMENSION SIGNAL FILTER
     ───────────────────────────────────────────── */
-    function applyFilter (filter) {
-      activeFilter = filter;
-      let visible = 0;
-      allSignalRows.forEach(function (tr) {
-        const ctx    = tr.getAttribute('data-context');
-        const show   = (filter === 'all' || ctx === filter);
-        tr.setAttribute('data-hidden', show ? 'false' : 'true');
-        if (show) visible++;
-      });
-      sigVisibleCount.textContent = visible;
 
-      filterTabs.forEach(function (tab) {
-        const isActive = tab.getAttribute('data-filter') === filter;
-        tab.classList.toggle('active', isActive);
-        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    /* Update per-context count badges */
+    function updateContextCounts (signals) {
+      const counts = { all: signals.length, Breakout: 0, Continuation: 0, Reversal: 0, 'False Breakout': 0 };
+      signals.forEach(function (s) { if (counts[s.cx] !== undefined) counts[s.cx]++; });
+
+      const idMap = {
+        'all':           'cnt-ctx-all',
+        'Breakout':      'cnt-ctx-Breakout',
+        'Continuation':  'cnt-ctx-Continuation',
+        'Reversal':      'cnt-ctx-Reversal',
+        'False Breakout':'cnt-ctx-FalseBreakout'
+      };
+      Object.keys(idMap).forEach(function (key) {
+        const el = document.getElementById(idMap[key]);
+        if (el) el.textContent = counts[key] != null ? counts[key] : '—';
       });
     }
 
+    /* Check whether any non-"all" filter is active */
+    function hasActiveFilters () {
+      return Object.values(activeFilters).some(function (v) { return v !== 'all'; });
+    }
+
+    /* Apply all active filter dimensions to the signal rows */
+    function applyFilter () {
+      let visible = 0;
+
+      allSignalRows.forEach(function (tr) {
+        const ctx = tr.getAttribute('data-context') || '';
+        const dir = tr.getAttribute('data-dir')     || '';
+        const vol = tr.getAttribute('data-vol')     || '';
+        const tf  = tr.getAttribute('data-tf')      || '';
+
+        const matchCtx = (activeFilters.ctx === 'all' || ctx === activeFilters.ctx);
+        const matchDir = (activeFilters.dir === 'all' || dir === activeFilters.dir);
+        const matchVol = (activeFilters.vol === 'all' || vol === activeFilters.vol);
+        const matchTf  = (activeFilters.tf  === 'all' || tf  === activeFilters.tf);
+
+        const show = matchCtx && matchDir && matchVol && matchTf;
+        tr.setAttribute('data-hidden', show ? 'false' : 'true');
+        if (show) visible++;
+      });
+
+      sigVisibleCount.textContent = visible;
+
+      /* Sync tab active states across all filter rows */
+      filterTabs.forEach(function (tab) {
+        const type   = tab.getAttribute('data-filter-type');
+        const val    = tab.getAttribute('data-filter');
+        const isActive = activeFilters[type] === val;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      /* Show/hide the Clear button */
+      if (filterClearBtn) filterClearBtn.hidden = !hasActiveFilters();
+
+      /* Persist selections in sessionStorage so they survive the 5s poll refresh */
+      try { sessionStorage.setItem('mbsFilters', JSON.stringify(activeFilters)); } catch(e) {}
+    }
+
+    /* Wire up all filter tabs */
     filterTabs.forEach(function (tab) {
       tab.addEventListener('click', function () {
-        applyFilter(tab.getAttribute('data-filter'));
+        const type = tab.getAttribute('data-filter-type');
+        const val  = tab.getAttribute('data-filter');
+        if (type && activeFilters.hasOwnProperty(type)) {
+          activeFilters[type] = val;
+          applyFilter();
+        }
       });
     });
+
+    /* Clear all filters */
+    if (filterClearBtn) {
+      filterClearBtn.addEventListener('click', function () {
+        activeFilters = { ctx: 'all', dir: 'all', vol: 'all', tf: 'all' };
+        applyFilter();
+      });
+    }
+
+    /* Restore persisted filters on load */
+    try {
+      const saved = sessionStorage.getItem('mbsFilters');
+      if (saved) { const parsed = JSON.parse(saved); Object.assign(activeFilters, parsed); }
+    } catch(e) {}
 
     /* ─────────────────────────────────────────────
        POLLING COUNTDOWN
