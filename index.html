@@ -1132,6 +1132,35 @@
     /* Age cell */
     .cell-age { color: var(--neutral); }
 
+    /* Score pip display */
+    .score-pips {
+      display: inline-flex;
+      gap: 3px;
+      align-items: center;
+    }
+    .score-pip {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--border-default);
+      flex-shrink: 0;
+    }
+    .score-pip.filled-5 { background: var(--bullish); box-shadow: 0 0 4px rgba(0,230,118,0.5); }
+    .score-pip.filled-4 { background: #69f0ae; }
+    .score-pip.filled-3 { background: var(--warning); }
+    .score-pip.filled-2 { background: #ff9800; }
+    .score-pip.filled-1 { background: var(--bearish); }
+    .score-cell {
+      text-align: center;
+    }
+    .score-num {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+
     /* Empty / Error state */
     .table-state {
       padding: clamp(var(--space-8), 6vw, var(--space-12)) var(--space-5);
@@ -1640,12 +1669,13 @@
                   <th scope="col">Direction</th>
                   <th scope="col">Strategy Context</th>
                   <th scope="col">Volume Status</th>
+                  <th scope="col" style="text-align:center">Score</th>
                   <th scope="col">Detected (ET)</th>
                 </tr>
               </thead>
               <tbody id="signal-table-body">
                 <tr class="loading-row">
-                  <td colspan="8">
+                  <td colspan="9">
                     <span class="spinner" aria-hidden="true"></span>
                     <span class="mono" style="color:var(--neutral)">Connecting to signal engine…</span>
                   </td>
@@ -1981,6 +2011,21 @@
       return escapeHTML(label);
     }
 
+    function scoreBadge (score) {
+      const n = score != null ? parseInt(score, 10) : 0;
+      const max = 5;
+      // Color class based on score value
+      const colorCls = n >= 5 ? 'filled-5' : n === 4 ? 'filled-4' : n === 3 ? 'filled-3' : n === 2 ? 'filled-2' : 'filled-1';
+      const scoreColor = n >= 5 ? 'var(--bullish)' : n === 4 ? '#69f0ae' : n === 3 ? 'var(--warning)' : n === 2 ? '#ff9800' : 'var(--bearish)';
+      let pips = '';
+      for (let i = 1; i <= max; i++) {
+        pips += `<span class="score-pip${i <= n ? ' ' + colorCls : ''}"></span>`;
+      }
+      return score != null
+        ? `<span class="score-pips">${pips}</span><span class="score-num" style="color:${scoreColor}">${n}/5</span>`
+        : '<span style="color:var(--neutral)">—</span>';
+    }
+
     function directionBadge (code) {
       if (code === 'B') return '<span class="badge badge-bullish" aria-label="Bullish">▲ Bullish</span>';
       if (code === 'S') return '<span class="badge badge-bearish" aria-label="Bearish">▼ Bearish</span>';
@@ -2063,7 +2108,7 @@
     function renderSignals (signals) {
       if (!signals || signals.length === 0) {
         sigBody.innerHTML = `
-          <tr><td colspan="8">
+          <tr><td colspan="9">
             <div class="table-state">
               <div class="table-state-icon">📭</div>
               <div class="table-state-title">No signals in current scan window</div>
@@ -2094,6 +2139,7 @@
           <td>${directionBadge(s.dr)}</td>
           <td>${contextBadge(s.cx)}</td>
           <td>${volumeBadge(s.vs)}</td>
+          <td class="score-cell">${scoreBadge(s._score)}</td>
           <td class="cell-age">${formatDetectedTime(s.dt)}</td>`;
         fragment.appendChild(tr);
         allSignalRows.push(tr);
@@ -2263,7 +2309,7 @@
     ───────────────────────────────────────────── */
     function renderSignalError (msg) {
       sigBody.innerHTML = `
-        <tr><td colspan="8">
+        <tr><td colspan="9">
           <div class="table-state">
             <div class="table-state-icon">⚠️</div>
             <div class="table-state-title">Signal feed connection error</div>
