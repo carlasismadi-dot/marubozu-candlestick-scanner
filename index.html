@@ -1487,17 +1487,18 @@
               <thead>
                 <tr>
                   <th scope="col">Ticker</th>
+                  <th scope="col">Timeframe</th>
                   <th scope="col" style="text-align:right">Price</th>
                   <th scope="col">Candle Range</th>
                   <th scope="col">Direction</th>
                   <th scope="col">Strategy Context</th>
                   <th scope="col">Volume Status</th>
-                  <th scope="col">Age</th>
+                  <th scope="col">Detected (ET)</th>
                 </tr>
               </thead>
               <tbody id="signal-table-body">
                 <tr class="loading-row">
-                  <td colspan="7">
+                  <td colspan="8">
                     <span class="spinner" aria-hidden="true"></span>
                     <span class="mono" style="color:var(--neutral)">Connecting to signal engine…</span>
                   </td>
@@ -1743,7 +1744,8 @@
        'dr' → direction  ('B'=bullish / 'S'=bearish)
        'cx' → strategy context
        'vs' → volume status ('C'=confirmed / 'P'=pending / 'N'=below)
-       'ag' → age (seconds since bar close)
+       'tf' → timeframe (M1, M5, M15, M30, H1, H4, D1, W1, MN1)
+       'dt' → detected_at timestamp (ISO string, displayed in ET)
        'id' → account id
        'eq' → equity
        'bl' → balance
@@ -1807,13 +1809,27 @@
       return isNaN(n) ? escapeHTML(v) : n.toFixed(1) + '%';
     }
 
-    function formatAge (seconds) {
-      if (seconds == null) return '—';
-      const s = parseInt(seconds, 10);
-      if (isNaN(s)) return escapeHTML(seconds);
-      if (s < 60)   return s + 's ago';
-      if (s < 3600) return Math.floor(s / 60) + 'm ago';
-      return Math.floor(s / 3600) + 'h ago';
+    function formatDetectedTime (isoString) {
+      if (!isoString) return '—';
+      const d = new Date(isoString);
+      if (isNaN(d.getTime())) return escapeHTML(isoString);
+
+      const datePart = d.toLocaleDateString('en-US', {
+        timeZone: 'America/New_York',
+        month: 'short',
+        day:   'numeric'
+      });
+      const timePart = d.toLocaleTimeString('en-US', {
+        timeZone: 'America/New_York',
+        hour:   'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+
+      // If detected today (ET), show time only; otherwise show date + time
+      const todayET = new Date().toLocaleDateString('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric' });
+      const label = (datePart === todayET) ? timePart + ' ET' : datePart + ', ' + timePart + ' ET';
+      return escapeHTML(label);
     }
 
     function directionBadge (code) {
@@ -1874,14 +1890,14 @@
     function getDemoPayload () {
       return {
         m: [
-          { tk:'EURUSD', pr:'1.08423', cr:'18.4', dr:'B', cx:'Breakout',      vs:'C', ag:42  },
-          { tk:'GBPJPY', pr:'193.561', cr:'42.1', dr:'S', cx:'Reversal',      vs:'C', ag:105 },
-          { tk:'AUDUSD', pr:'0.65318', cr:'11.6', dr:'B', cx:'Continuation',  vs:'P', ag:217 },
-          { tk:'USDJPY', pr:'149.872', cr:'28.3', dr:'S', cx:'False Breakout',vs:'C', ag:330 },
-          { tk:'GBPUSD', pr:'1.26804', cr:'22.7', dr:'B', cx:'Continuation',  vs:'C', ag:71  },
-          { tk:'EURGBP', pr:'0.85611', cr:'9.2',  dr:'S', cx:'Reversal',      vs:'N', ag:498 },
-          { tk:'NZDUSD', pr:'0.60147', cr:'13.8', dr:'B', cx:'Breakout',      vs:'P', ag:162 },
-          { tk:'USDCAD', pr:'1.36254', cr:'16.5', dr:'B', cx:'Continuation',  vs:'C', ag:244 }
+          { tk:'EURUSD', tf:'M15', pr:'1.08423', cr:'18.4', dr:'B', cx:'Breakout',      vs:'C', dt: new Date(Date.now() - 42  * 1000).toISOString() },
+          { tk:'GBPJPY', tf:'H1',  pr:'193.561', cr:'42.1', dr:'S', cx:'Reversal',      vs:'C', dt: new Date(Date.now() - 105 * 1000).toISOString() },
+          { tk:'AUDUSD', tf:'M30', pr:'0.65318', cr:'11.6', dr:'B', cx:'Continuation',  vs:'P', dt: new Date(Date.now() - 217 * 1000).toISOString() },
+          { tk:'USDJPY', tf:'D1',  pr:'149.872', cr:'28.3', dr:'S', cx:'False Breakout',vs:'C', dt: new Date(Date.now() - 330 * 1000).toISOString() },
+          { tk:'GBPUSD', tf:'H1',  pr:'1.26804', cr:'22.7', dr:'B', cx:'Continuation',  vs:'C', dt: new Date(Date.now() - 71  * 1000).toISOString() },
+          { tk:'EURGBP', tf:'H4',  pr:'0.85611', cr:'9.2',  dr:'S', cx:'Reversal',      vs:'N', dt: new Date(Date.now() - 498 * 1000).toISOString() },
+          { tk:'NZDUSD', tf:'M5',  pr:'0.60147', cr:'13.8', dr:'B', cx:'Breakout',      vs:'P', dt: new Date(Date.now() - 162 * 1000).toISOString() },
+          { tk:'USDCAD', tf:'M30', pr:'1.36254', cr:'16.5', dr:'B', cx:'Continuation',  vs:'C', dt: new Date(Date.now() - 244 * 1000).toISOString() }
         ],
         a: [
           { id:'MBS-001', eq:'12480.32', bl:'12100.00', ml:'842.3', ot:2,  st:'ACTIVE',   iv:'investor1',  ip:'Inv@Pass001' },
@@ -1898,7 +1914,7 @@
     function renderSignals (signals) {
       if (!signals || signals.length === 0) {
         sigBody.innerHTML = `
-          <tr><td colspan="7">
+          <tr><td colspan="8">
             <div class="table-state">
               <div class="table-state-icon">📭</div>
               <div class="table-state-title">No signals in current scan window</div>
@@ -1920,12 +1936,13 @@
         tr.setAttribute('data-index', i);
         tr.innerHTML = `
           <td class="cell-ticker">${escapeHTML(s.tk)}</td>
+          <td class="mono">${escapeHTML(s.tf)}</td>
           <td class="cell-price">${formatPrice(s.pr)}</td>
           <td class="mono" style="text-align:right">${escapeHTML(s.cr)} pips</td>
           <td>${directionBadge(s.dr)}</td>
           <td>${contextBadge(s.cx)}</td>
           <td>${volumeBadge(s.vs)}</td>
-          <td class="cell-age">${formatAge(s.ag)}</td>`;
+          <td class="cell-age">${formatDetectedTime(s.dt)}</td>`;
         fragment.appendChild(tr);
         allSignalRows.push(tr);
       });
@@ -2029,7 +2046,7 @@
     ───────────────────────────────────────────── */
     function renderSignalError (msg) {
       sigBody.innerHTML = `
-        <tr><td colspan="7">
+        <tr><td colspan="8">
           <div class="table-state">
             <div class="table-state-icon">⚠️</div>
             <div class="table-state-title">Signal feed connection error</div>
@@ -2080,10 +2097,8 @@
       if (row.signal_strength >= 4) vs = 'C';
       else if (row.signal_strength >= 2) vs = 'P';
 
-      // Age in seconds since detected_at
-      const ag = row.detected_at
-        ? Math.floor((Date.now() - new Date(row.detected_at).getTime()) / 1000)
-        : null;
+      // Raw detected_at timestamp (ISO string) for absolute time display
+      const dt = row.detected_at || null;
 
       // Strategy context: derive from timeframe + direction combo
       // (not stored in DB; fall back to 'Continuation' as neutral default)
@@ -2097,12 +2112,13 @@
 
       return {
         tk:         row.ticker,
+        tf:         row.timeframe || '—',
         pr:         row.close != null ? parseFloat(row.close).toFixed(5) : '—',
         cr:         cr,
         dr:         dr,
         cx:         cx,
         vs:         vs,
-        ag:         ag,
+        dt:         dt,
         // Extra fields for terminal log (not used by table renderers)
         _bodyRatio: row.body_ratio != null ? parseFloat(row.body_ratio) : null,
         _tf:        row.timeframe  || '',
