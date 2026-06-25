@@ -2485,7 +2485,7 @@
           '<div class="table-state">' +
           '<div class="table-state-icon">📭</div>' +
           '<div class="table-state-title">No signals detected</div>' +
-          '<div class="table-state-msg">No qualifying marubozu patterns in the current bar window across tracked crypto pairs.</div>' +
+          '<div class="table-state-msg">No qualifying marubozu patterns detected across 6 pairs × 9 timeframes. Signals appear as each new bar closes.</div>' +
           '</div></td></tr>';
         if (sigVisibleCount) sigVisibleCount.textContent = '0';
         if (sigTotalCount)   sigTotalCount.textContent   = '0';
@@ -2685,6 +2685,7 @@
           .from('market_signals')
           .select('ticker, close, signal_strength, direction, timeframe, body_ratio, detected_at, context, volume_status, pct_change')
           .in('ticker', CONFIG.TRACKED_PAIRS)
+          .order('ticker',      { ascending: true  })
           .order('detected_at', { ascending: false })
           .limit(CONFIG.SIGNALS_LIMIT),
 
