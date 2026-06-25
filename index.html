@@ -1344,6 +1344,127 @@
     tr[data-hidden="true"] { display: none; }
 
     /* ════════════════════════════════════════════════════════
+       UPGRADE — SUMMARY BAR (above signal table)
+    ════════════════════════════════════════════════════════ */
+    .signal-summary-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-4);
+      margin-bottom: var(--space-4);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--neutral);
+      letter-spacing: 0.02em;
+    }
+
+    .summary-sep { color: var(--border-active); }
+    .summary-total       { color: #d8e8f8; font-weight: 600; }
+    .summary-bullish     { color: var(--bullish); font-weight: 600; }
+    .summary-bearish     { color: var(--bearish); font-weight: 600; }
+    .summary-confluence  { color: var(--accent); font-weight: 600; }
+
+    /* ════════════════════════════════════════════════════════
+       UPGRADE — TIMEFRAME WEIGHT VISUAL (left border accents)
+    ════════════════════════════════════════════════════════ */
+    tbody tr.tf-gold   td:first-child { border-left: 3px solid rgba(212, 175, 55, 0.65); }
+    tbody tr.tf-silver td:first-child { border-left: 3px solid rgba(176, 184, 196, 0.55); }
+
+    /* ════════════════════════════════════════════════════════
+       UPGRADE — CONFLUENCE BADGE (glowing, next to ticker)
+    ════════════════════════════════════════════════════════ */
+    .confluence-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      margin-left: var(--space-2);
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .confluence-3 {
+      background: rgba(255, 179, 0, 0.15);
+      color: var(--warning);
+      border: 1px solid rgba(255, 179, 0, 0.4);
+      animation: confluence-pulse-fire 1.8s ease-in-out infinite;
+    }
+
+    .confluence-5 {
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      animation: confluence-pulse-volt 1.8s ease-in-out infinite;
+    }
+
+    @keyframes confluence-pulse-fire {
+      0%, 100% { box-shadow: 0 0 5px rgba(255, 179, 0, 0.35); }
+      50%      { box-shadow: 0 0 13px rgba(255, 179, 0, 0.8); }
+    }
+
+    @keyframes confluence-pulse-volt {
+      0%, 100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.35); }
+      50%      { box-shadow: 0 0 15px rgba(0, 212, 255, 0.85); }
+    }
+
+    /* ════════════════════════════════════════════════════════
+       UPGRADE — STALE SIGNAL AGE COLORS
+    ════════════════════════════════════════════════════════ */
+    .age-fresh    { color: var(--neutral); }
+    .age-stale    { color: var(--warning); font-weight: 600; }
+    .age-critical { color: var(--bearish); font-weight: 700; }
+
+    /* ════════════════════════════════════════════════════════
+       UPGRADE — CONTEXT TOOLTIP (hover explanation)
+    ════════════════════════════════════════════════════════ */
+    .ctx-tip {
+      position: relative;
+      cursor: help;
+      border-bottom: 1px dotted currentColor;
+    }
+
+    .ctx-tip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: 230px;
+      background: var(--bg-elevated);
+      color: #e8f0fa;
+      border: 1px solid var(--border-active);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      font-family: var(--font-ui);
+      font-size: var(--text-xs);
+      font-weight: 400;
+      line-height: 1.4;
+      white-space: normal;
+      text-align: left;
+      box-shadow: var(--shadow-card);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 150ms var(--ease-default);
+      z-index: 50;
+    }
+
+    .ctx-tip:hover::after,
+    .ctx-tip:focus-visible::after {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ════════════════════════════════════════════════════════
        FAQ SECTION
     ════════════════════════════════════════════════════════ */
     .faq-list {
@@ -2155,6 +2276,30 @@
     };
 
     /* ─────────────────────────────────────────────
+       UPGRADE — TIMEFRAME PRIORITY ORDER
+       Higher timeframes always rank first in the table.
+    ───────────────────────────────────────────── */
+    const TF_ORDER = ['MN1', 'W1', 'D1', 'H4', 'H1', 'M30', 'M15', 'M5', 'M1'];
+    const TF_RANK  = {};
+    TF_ORDER.forEach(function (tf, i) { TF_RANK[tf] = i; });
+
+    // Visual weight tiers for the left-border accent
+    const TF_GOLD_TIER   = ['D1', 'W1', 'MN1'];
+    const TF_SILVER_TIER = ['H1', 'H4'];
+
+    // Confluence thresholds (distinct active timeframes per coin)
+    const CONFLUENCE_FIRE_MIN = 3; // 🔥 3 TF
+    const CONFLUENCE_VOLT_MIN = 5; // ⚡ 5 TF
+
+    // Plain-English tooltip copy for each strategy context label
+    const CTX_TOOLTIPS = {
+      'Breakout':       'Price has pushed through a key support or resistance level with strong momentum.',
+      'Continuation':   'Price is pausing briefly before continuing in the direction of the existing trend.',
+      'Reversal':       'Price is showing signs of turning against the prior trend near a key level.',
+      'False Breakout': 'Price broke a key level but failed to hold, trapping traders who entered on the move.'
+    };
+
+    /* ─────────────────────────────────────────────
        SHORT-KEY PAYLOAD MAP
        'tk' → ticker (asset pair)
        'pr' → price (USD)
@@ -2256,6 +2401,28 @@
       return escapeHTML(label);
     }
 
+    /* ─────────────────────────────────────────────
+       UPGRADE — STALE SIGNAL WARNING
+       < 1h  → normal · ≥ 1h → orange · ≥ 4h → red + ⚠
+    ───────────────────────────────────────────── */
+    function formatDetectedAge (isoString) {
+      const label = formatDetectedTime(isoString);
+      if (!isoString) return label;
+
+      const d = new Date(isoString);
+      if (isNaN(d.getTime())) return label;
+
+      const ageHours = (Date.now() - d.getTime()) / 36e5;
+
+      if (ageHours >= 4) {
+        return '<span class="age-critical" title="Detected ' + ageHours.toFixed(1) + 'h ago">⚠ ' + label + '</span>';
+      }
+      if (ageHours >= 1) {
+        return '<span class="age-stale" title="Detected ' + ageHours.toFixed(1) + 'h ago">' + label + '</span>';
+      }
+      return '<span class="age-fresh">' + label + '</span>';
+    }
+
     function scoreBadge (score) {
       const n   = score != null ? parseInt(score, 10) : 0;
       const max = 5;
@@ -2291,7 +2458,42 @@
                 : ctx.toLowerCase() === 'continuation' ? 'ctx-continuation'
                 : ctx.toLowerCase() === 'reversal'     ? 'ctx-reversal'
                 : '';
+      const tip = CTX_TOOLTIPS[ctx];
+      if (tip) {
+        return `<span class="${cls} ctx-tip" data-tooltip="${escapeHTML(tip)}" tabindex="0">${escapeHTML(ctx)}</span>`;
+      }
       return `<span class="${cls}">${escapeHTML(ctx)}</span>`;
+    }
+
+    /* ─────────────────────────────────────────────
+       UPGRADE — CONFLUENCE BADGE
+       3+ distinct timeframes active on a coin → 🔥 N TF
+       5+ distinct timeframes active on a coin → ⚡ N TF
+    ───────────────────────────────────────────── */
+    function confluenceBadge (tfCount) {
+      if (!tfCount) return '';
+      if (tfCount >= CONFLUENCE_VOLT_MIN) {
+        return `<span class="confluence-badge confluence-5" title="${tfCount} timeframes active on this coin">⚡ ${tfCount} TF</span>`;
+      }
+      if (tfCount >= CONFLUENCE_FIRE_MIN) {
+        return `<span class="confluence-badge confluence-3" title="${tfCount} timeframes active on this coin">🔥 ${tfCount} TF</span>`;
+      }
+      return '';
+    }
+
+    /* ─────────────────────────────────────────────
+       UPGRADE — COUNT DISTINCT ACTIVE TIMEFRAMES PER COIN
+    ───────────────────────────────────────────── */
+    function buildConfluenceMap (rows) {
+      const tfSets = {};
+      rows.forEach(function (r) {
+        if (!r.tk) return;
+        if (!tfSets[r.tk]) tfSets[r.tk] = new Set();
+        tfSets[r.tk].add(r._tf);
+      });
+      const map = {};
+      Object.keys(tfSets).forEach(function (tk) { map[tk] = tfSets[tk].size; });
+      return map;
     }
 
     function statusBadge (st) {
@@ -2442,6 +2644,54 @@
     }
 
     /* ─────────────────────────────────────────────
+       UPGRADE — SUMMARY BAR
+       Thin bar above the signal table: total / bullish /
+       bearish / coins currently in confluence.
+    ───────────────────────────────────────────── */
+    let summaryBarEl = null;
+
+    function ensureSummaryBar () {
+      if (summaryBarEl) return summaryBarEl;
+      if (!sigBody) return null;
+      const panel = sigBody.closest('.table-panel');
+      if (!panel || !panel.parentNode) return null;
+
+      const bar = document.createElement('div');
+      bar.className = 'signal-summary-bar';
+      bar.id        = 'signal-summary-bar';
+      bar.setAttribute('role', 'status');
+      bar.setAttribute('aria-live', 'polite');
+      panel.parentNode.insertBefore(bar, panel);
+      summaryBarEl = bar;
+      return bar;
+    }
+
+    function updateSummaryBar (rows, confluenceMap) {
+      const bar = ensureSummaryBar();
+      if (!bar) return;
+
+      const total = rows.length;
+      let bullish = 0, bearish = 0;
+      rows.forEach(function (r) {
+        if (r.dr === 'B') bullish++;
+        else if (r.dr === 'S') bearish++;
+      });
+
+      const confluentCoins = Object.keys(confluenceMap || {}).filter(function (tk) {
+        return confluenceMap[tk] >= CONFLUENCE_FIRE_MIN;
+      }).length;
+
+      bar.innerHTML =
+        `<span class="summary-total">${total} signal${total === 1 ? '' : 's'}</span>` +
+        `<span class="summary-sep">·</span>` +
+        `<span class="summary-bullish">${bullish} Bullish</span>` +
+        `<span class="summary-sep">·</span>` +
+        `<span class="summary-bearish">${bearish} Bearish</span>` +
+        `<span class="summary-sep">·</span>` +
+        `<span class="summary-confluence">${confluentCoins} coin${confluentCoins === 1 ? '' : 's'} in confluence</span>`;
+    }
+
+    /* ─────────────────────────────────────────────
        MAP SIGNAL ROW from Supabase schema
     ───────────────────────────────────────────── */
     function mapSignalRow (row) {
@@ -2489,16 +2739,37 @@
           '</div></td></tr>';
         if (sigVisibleCount) sigVisibleCount.textContent = '0';
         if (sigTotalCount)   sigTotalCount.textContent   = '0';
+        updateSummaryBar([], {});
         return;
       }
+
+      // ── UPGRADE: confluence map computed from the full, unfiltered set ──
+      const confluenceMap = buildConfluenceMap(rows);
+
+      // ── UPGRADE: timeframe priority sort (MN1 → M1), then strength desc ──
+      const sortedRows = rows.slice().sort(function (a, b) {
+        const ra = TF_RANK[a._tf] != null ? TF_RANK[a._tf] : TF_ORDER.length;
+        const rb = TF_RANK[b._tf] != null ? TF_RANK[b._tf] : TF_ORDER.length;
+        if (ra !== rb) return ra - rb;
+        const sa = (a._score != null) ? a._score : -Infinity;
+        const sb = (b._score != null) ? b._score : -Infinity;
+        return sb - sa;
+      });
 
       allSignalRows = [];
       const fragment = document.createDocumentFragment();
 
-      rows.forEach(function (r) {
+      sortedRows.forEach(function (r) {
         const tr = document.createElement('tr');
         tr.setAttribute('data-hidden', 'false');
         tr.setAttribute('data-ticker', r.tk);
+
+        // UPGRADE: timeframe weight visual (gold = D1/W1/MN1, silver = H1/H4)
+        if (TF_GOLD_TIER.indexOf(r._tf) !== -1) {
+          tr.classList.add('tf-gold');
+        } else if (TF_SILVER_TIER.indexOf(r._tf) !== -1) {
+          tr.classList.add('tf-silver');
+        }
 
         const pctChange = r._pctChange != null
           ? formatPct(r._pctChange)
@@ -2508,8 +2779,11 @@
           ? (parseFloat(r._pctChange) >= 0 ? 'var(--bullish)' : 'var(--bearish)')
           : 'var(--neutral)';
 
+        // UPGRADE: confluence badge next to the ticker name
+        const cBadge = confluenceBadge(confluenceMap[r.tk] || 0);
+
         tr.innerHTML =
-          `<td class="cell-ticker">${escapeHTML(r.tk)}</td>` +
+          `<td class="cell-ticker">${escapeHTML(r.tk)}${cBadge}</td>` +
           `<td>${escapeHTML(r._tf)}</td>` +
           `<td class="cell-price">${formatPrice(r.pr)}</td>` +
           `<td style="color:${pctColor};font-weight:500">${pctChange}</td>` +
@@ -2517,7 +2791,7 @@
           `<td>${contextBadge(r.cx)}</td>` +
           `<td>${volumeBadge(r.vs)}</td>` +
           `<td class="score-cell">${scoreBadge(r._score)}</td>` +
-          `<td class="cell-age">${formatDetectedTime(r.dt)}</td>`;
+          `<td class="cell-age">${formatDetectedAge(r.dt)}</td>`;
 
         allSignalRows.push({ el: tr, _raw: r });
         fragment.appendChild(tr);
@@ -2528,6 +2802,7 @@
 
       if (sigTotalCount) sigTotalCount.textContent = rows.length;
       updateFilterCounts(rows);
+      updateSummaryBar(rows, confluenceMap);
       applyFilters();
     }
 
