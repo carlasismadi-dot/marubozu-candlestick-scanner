@@ -502,6 +502,21 @@
       height: 36px;
       display: flex;
       align-items: center;
+      /* UPGRADE: fade the marquee edges instead of a hard clip */
+      -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        #000 28px,
+        #000 calc(100% - 28px),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        #000 28px,
+        #000 calc(100% - 28px),
+        transparent 100%
+      );
     }
 
     .ticker-track {
@@ -1459,7 +1474,8 @@
     }
 
     .ctx-tip:hover::after,
-    .ctx-tip:focus-visible::after {
+    .ctx-tip:focus-visible::after,
+    .ctx-tip.tip-active::after {
       opacity: 1;
       visibility: visible;
     }
@@ -2996,6 +3012,29 @@
 
       startCountdown();
     }
+
+    /* ─────────────────────────────────────────────
+       UPGRADE — TAP-TO-TOGGLE CONTEXT TOOLTIPS (mobile)
+       Hover doesn't fire on touch devices, so a tap on
+       a .ctx-tip badge toggles the tooltip visible, and
+       a tap anywhere else closes any open tooltip.
+    ───────────────────────────────────────────── */
+    document.addEventListener('click', function (e) {
+      const tip = e.target.closest('.ctx-tip');
+
+      if (!tip) {
+        document.querySelectorAll('.ctx-tip.tip-active').forEach(function (t) {
+          t.classList.remove('tip-active');
+        });
+        return;
+      }
+
+      const wasActive = tip.classList.contains('tip-active');
+      document.querySelectorAll('.ctx-tip.tip-active').forEach(function (t) {
+        t.classList.remove('tip-active');
+      });
+      if (!wasActive) tip.classList.add('tip-active');
+    });
 
     /* ─────────────────────────────────────────────
        FAQ ACCORDION
