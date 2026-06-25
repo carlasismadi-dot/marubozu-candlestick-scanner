@@ -2445,20 +2445,31 @@
        MAP SIGNAL ROW from Supabase schema
     ───────────────────────────────────────────── */
     function mapSignalRow (row) {
+      // direction: Supabase stores 'BULLISH' or 'BEARISH'
+      // Dashboard expects 'B' (bullish) or 'S' (bearish/sell)
+      var dirRaw = (row.direction || '').toUpperCase();
+      var dirCode = dirRaw === 'BULLISH' ? 'B'
+                  : dirRaw === 'BEARISH' ? 'S'
+                  : dirRaw.charAt(0);
+
+      // volume_status: 'Confirmed'→'C', 'Pending'→'P', 'Below'→'N'
+      var vsRaw = (row.volume_status || '').toLowerCase();
+      var vsCode = vsRaw === 'confirmed' ? 'C'
+                 : vsRaw === 'pending'   ? 'P'
+                 : vsRaw === 'below'     ? 'N'
+                 : (row.volume_confirmed ? 'C' : 'N');
+
       return {
-        tk:        row.ticker || '—',
-        pr:        row.close,
-        dr:        (row.direction || '').charAt(0).toUpperCase(),
-        cx:        row.context || row.signal_context || '—',
-        vs:        row.volume_status
-                     ? row.volume_status.charAt(0).toUpperCase()
-                     : (row.volume_confirmed ? 'C' : 'N'),
-        dt:        row.detected_at,
-        _tf:       row.timeframe || '—',
+        tk:         row.ticker || '—',
+        pr:         row.close,
+        dr:         dirCode,
+        cx:         row.context || row.signal_context || 'Unknown',
+        vs:         vsCode,
+        dt:         row.detected_at,
+        _tf:        row.timeframe || '—',
         _bodyRatio: row.body_ratio,
-        _score:    row.signal_strength,
-        // Store candle percentage change
-        _pctChange: row.pct_change || row.candle_range_pct || null
+        _score:     row.signal_strength,
+        _pctChange: row.pct_change != null ? row.pct_change : null
       };
     }
 
